@@ -14,6 +14,7 @@ from random import choice
 from tkinter import messagebox as mb
 import time
 
+#CIAO ANDRE! QUESTA E' una prova di modifica!
 
 ### leggere json
 with open('data.json') as f:
