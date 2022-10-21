@@ -1,22 +1,17 @@
-#Dicitura per Pyinstaller:
-import sys, os
-import tkinter
-
-#os.chdir(sys._MEIPASS)
+# Dicitura per Pyinstaller:
+# os.chdir(sys._MEIPASS)
+# import sys, os
 
 import pandas as pd
 import json
 from tkinter.ttk import *
 from tkinter import *
 import PIL.Image
-from PIL import ImageTk,ImageOps
+from PIL import ImageTk, ImageOps
 from random import choice
 from tkinter import messagebox as mb
-import time
 
-#CIAO ANDRE! QUESTA E' una prova di modifica!
-
-### leggere json
+# ##leggere json
 with open('data.json') as f:
     data = json.load(f)
 
@@ -259,9 +254,7 @@ class Menu: #TODO scrivere codice classe
     def lanch_simulazione_esame(self):
         gui_menu_base.destroy()
         lanch_Scheda()
-    def lanch_quiz_domande_sbagliate(self):
-        gui_menu_base.destroy()
-        Quiz_domande_sbagliate() #TODO creare GUI
+
     def funz_base_button_ricerca(self):
         global index_domande_base
         index_domande_base = []
@@ -806,7 +799,6 @@ class Quiz_base_cerca:
             val += 1
 
 def lanch_menu():
-    # TODO scrivere codice fz lancia menu
     global menu
     global gui_menu_base
     try:
@@ -956,43 +948,6 @@ def elimina_quesito_memory(index):
             json.dump(data, file)
     except:
         pass
-
-## TIMER
-class Timer:
-    def __init__(self,gui,font=("Arial", 18, ""),bg='',fg='black'):
-        self.gui = gui
-        self.font = font
-        self.bg=bg
-        self.fg=fg
-        self.minute = StringVar()
-        self.second = StringVar()
-        self.minute.set("30")
-        self.second.set("00")
-        self.create_label()
-        self.start()
-
-    def create_label(self):
-        minuteLabel = Label(self.gui, width=2, font=self.font ,textvariable=self.minute,bg=self.bg,fg=self.fg)
-        space_Label = Label(self.gui,font=self.font ,text=':',bg=self.bg,fg=self.fg)
-        secondLabel = Label(self.gui, width=2, font=self.font,textvariable=self.second,bg=self.bg,fg=self.fg)
-
-        minuteLabel.pack(side=LEFT)
-        space_Label.pack(side=LEFT)
-        secondLabel.pack(side=LEFT)
-
-    def start(self):
-        temp = int(self.minute.get()) * 60 + int(self.second.get())
-        while temp > -1:
-            mins, secs = divmod(temp, 60)
-            self.minute.set("{0:2d}".format(mins))
-            self.second.set("{0:2d}".format(secs))
-            root.update()
-            time.sleep(1)
-
-            if (temp == 0):
-                messagebox.showinfo("Time Countdown", "Time's up ")
-            temp -= 1
-
 
 ## Menu Quiz Vela ##
 class Menu_vela:
