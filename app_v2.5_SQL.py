@@ -225,7 +225,7 @@ class Signup:
         root.mainloop()
 
 ### leggere json
-with open('data.json') as f:
+with open('questions_data.json') as f:
     data = json.load(f)
 
 data = pd.DataFrame(data)
@@ -1035,7 +1035,7 @@ def lanch_base_cerca():
     gui_quiz_base.resizable(False, False)
     gui_quiz_base.title("Quesiti Vela")
     try:
-        quiz = Quiz_base_cerca(index_domande_base)
+        quiz = QuizBaseCerca(index_domande_base)
         gui_quiz_base.mainloop()
     except:
         mb.showinfo(title='Attenzione',message="Attenzione!\nParola Non Trovata")
