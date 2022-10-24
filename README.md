@@ -16,3 +16,10 @@ OPEN POINTS
 - create template (Class/Superclass) for SetupQuizPage
 - create template (Class/Superclass) for QuizPage
 - create template (Class/Superclass) for ResultPage
+
+### TODO PER LORE
+
+guardare il PEP8 dei warning che ti suggerisce come fare alcune modifiche:
+- except senza richiamo all'eccezione
+- variabili globali (non le conosco)
+- metodi a cui passi il self ma non lo usano (@statichmethod)
