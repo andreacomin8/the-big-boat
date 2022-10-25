@@ -26,3 +26,14 @@ guardare il PEP8 dei warning che ti suggerisce come fare alcune modifiche:
 
 
 Creare metodo che distrugge e lancia una nuova finestra
+
+
+Classe LandingPage
+Classe SetupQuiz 
+- solo cose in comune 
+Classe SetupQuizBase
+Classe SetupQuizVela
+Classe Quiz
+Classe QuizRispMult
+Classe QuizVF
+Classe Risultati

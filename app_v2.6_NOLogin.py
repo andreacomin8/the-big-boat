@@ -34,20 +34,21 @@ sottocategoria_vela = data_vela['sottocategoria']
 options_vela = ['Vero', 'Falso']
 figure_vela = data_vela['Immagini']
 
+
 # Menu Iniziale
 class LandingPage:
     def __init__(self):
         self.show_menu_iniziale()
     def show_menu_iniziale(self):
         messaggio_benvenuto = "Benvenuto\\a!\nQui puoi esercitarti con i nuovi quiz ministeriali per il conseguimento\ndella patente nautica.\n\nScegli con quali quiz vuoi esercitarti:"
-        benvenuto_label = Label(gui_menu_1, text=messaggio_benvenuto,
+        benvenuto_label = Label(gui_landing_page, text=messaggio_benvenuto,
                                 font=('ariel', 16, 'bold'),
                                 bg='#b8e6fe', fg='black', justify='center')
         benvenuto_label.pack(pady=10)
 
-        canvas_sx = Canvas(gui_menu_1, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_sx = Canvas(gui_landing_page, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_sx.pack(padx=20, side=LEFT)
-        canvas_dx = Canvas(gui_menu_1, bg="#b8e6fe", bd=2, highlightthickness=0, relief='ridge')
+        canvas_dx = Canvas(gui_landing_page, bg="#b8e6fe", bd=2, highlightthickness=0, relief='ridge')
         canvas_dx.pack(pady=10, padx=20, side=RIGHT)
 
         global img_base
@@ -68,12 +69,13 @@ class LandingPage:
                             font=("ariel", 10, "italic"))
         final_label.place(relx=0.37, rely=0.90)
 
-def lanch_landing_page():
-    global menu_iniziale
-    global gui_menu_1
 
+def launch_landing_page():
+    global gui_landing_page
+
+    # todo creare metodo che distrugge una finestra e ne lancia una nuova
     try:
-        gui_setup_base.destroy()
+        tk_obj.destroy()
     except:
         pass
 
@@ -83,49 +85,49 @@ def lanch_landing_page():
         pass
 
     finally:
-        gui_menu_1 = Tk()
+        gui_landing_page = Tk()
         height = 400
         width = 630
-        left = (gui_menu_1.winfo_screenwidth() - width) / 2
-        top = (gui_menu_1.winfo_screenheight() - height) / 2
+        left = (gui_landing_page.winfo_screenwidth() - width) / 2
+        top = (gui_landing_page.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top)
-        gui_menu_1.geometry(geometry)
-        gui_menu_1.resizable(False, False)
-        gui_menu_1.title("Quiz Patente Nautica - Menu Iniziale")
-        gui_menu_1.configure(background='#b8e6fe')
-        menu_iniziale = LandingPage()
-        gui_menu_1.mainloop()
+        gui_landing_page.geometry(geometry)
+        gui_landing_page.resizable(False, False)
+        gui_landing_page.title("Quiz Patente Nautica - Menu Iniziale")
+        gui_landing_page.configure(background='#b8e6fe')
+        LandingPage()
+        gui_landing_page.mainloop()
 
 
-# Menu Quiz Base
-# TODO scrivere codice classe
-class Menu:
-    def __init__(self):
-        self.show_menu()
+class SetupQuiz:
+    def __init__(self, tk_obj, header_label, canvas_list):
+        self.tk_obj = tk_obj
+        self.header_label = header_label
+        self.canvas_list = canvas_list
 
-    def show_menu(self):
-        # Label
+        self.show_page()
+    # canvas_list = [{canvas : {tk_obj, bg:'#b8e6fe', bd:2, highlightthickness:0, relief:'ridge'}}, pack : {padx:50, pady:10, fill:'x', expand:False}}, {}]
+    def show_page(self):
 
-        messaggio_benvenuto = "Quiz Base"
-        benvenuto_label = Label(gui_setup_base, text=messaggio_benvenuto,
-                                font=('ariel', 20, 'bold'),
-                                bg='#b8e6fe', fg='#778899', justify='center')
-        benvenuto_label.pack(padx=50, pady=5)
-        # place(relx=0.5, rely=0, anchor=N)
+        self.header_label.pack(padx=50, pady=10, fill='x', expand=False)
 
+        for canvas_obj in self.canvas_list:
+            canvas_obj.canvas.pack(canvas_obj.pack)
+
+            
         ############################################################################################
 
         # Create Canvas
-        canvas_1 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_1 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_1.pack(padx=50, pady=10, fill='x', expand=False)
 
-        canvas_2 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_2 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_2.pack(padx=50, fill='x', expand=False, pady=10)
 
-        canvas_3 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_3 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_3.pack(padx=50, fill='x', expand=False, pady=10)
 
-        canvas_4 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_4 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0,)
         canvas_4.pack(padx=50, fill='x', expand=False)
 
         ############################################################################################
@@ -243,7 +245,163 @@ class Menu:
         global img_arrow
         img_arrow = PhotoImage(file='Images/return.png')
         return_menu_bottom = Button(canvas_4, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
-                                    relief=RAISED, command=lanch_landing_page)
+                                    relief=RAISED, command=launch_landing_page)
+
+        return_menu_bottom.pack()
+
+        final_label = Label(canvas_4, text='Created by Lorenzo Tumminello', bg='#b8e6fe', font=("ariel", 10, "italic"))
+        final_label.pack(pady=10)
+
+        ############################################################################################
+
+
+
+# Menu Quiz Base
+class SetupQuizBase:
+    def __init__(self):
+        self.show_page()
+
+    def show_page(self):
+        # Label
+
+        messaggio_benvenuto = "Quiz Base"
+        benvenuto_label = Label(tk_obj, text=messaggio_benvenuto,
+                                font=('ariel', 20, 'bold'),
+                                bg='#b8e6fe', fg='#778899', justify='center')
+        benvenuto_label.pack(padx=50, pady=5)
+        # place(relx=0.5, rely=0, anchor=N)
+
+        ############################################################################################
+
+        # Create Canvas
+        canvas_1 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_1.pack(padx=50, pady=10, fill='x', expand=False)
+
+        canvas_2 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_2.pack(padx=50, fill='x', expand=False, pady=10)
+
+        canvas_3 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_3.pack(padx=50, fill='x', expand=False, pady=10)
+
+        canvas_4 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_4.pack(padx=50, fill='x', expand=False)
+
+        ############################################################################################
+        # canvas_1 Labels
+        label_argomento = Label(canvas_1,
+                                text='Seleziona Argomento: ',
+                                font=('ariel', 16, 'bold'), bg='#b8e6fe')
+
+        label_domande = Label(canvas_1,
+                              text='Numero Domande : ',
+                              font=('ariel', 16, 'bold'), bg='#b8e6fe')
+
+        # canvas_1 Combobox
+        global argomento_selezionato
+        argomento_selezionato = StringVar()
+        combobox = Combobox(canvas_1, textvariable=argomento_selezionato, width=30, )
+        combobox['values'] = ['TUTTI', 'TEORIA DELLO SCAFO', 'MOTORI', 'SICUREZZA DELLA NAVIGAZIONE',
+                              'MANOVRA E CONDOTTA', 'COLREG E SEGNALAMENTO MARITTIMO', 'METEOROLOGIA',
+                              'NAVIGAZIONE CARTOGRAFICA ED ELETTRONICA', 'NORMATIVA DIPORTISTICA E AMBIENTALE']
+        combobox['state'] = 'readonly'  # impedisce di scrivere nel menu a tendina
+        combobox.set("TUTTI")
+
+        combobox.bind('<<ComboboxSelected>>', argomento_selezionato.get())
+
+        # canvas_1 slider
+        global numero_domande
+        numero_domande = IntVar()
+        slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
+                       length=300, bg='#b8e6fe')
+        slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
+                             bg='#b8e6fe')
+
+        # canvas_1 buttons
+        lanch_button = Button(canvas_1, text='Genera Scheda\npersonalizzata', font=("ariel", 16, " bold"),
+                              relief=RAISED, command=self.lanch_quiz_personalizzato, bg='#b8e6fe', fg='green', height=4,
+                              width=13)
+
+        # Canvas_1 place widgets
+        canvas_1.grid_columnconfigure((0, 1), weight=1)
+
+        label_argomento.grid(row=0, column=0, padx=20, pady=20, sticky='e')
+        combobox.grid(row=0, column=1, padx=20, pady=20, sticky='w')
+
+        label_domande.grid(row=1, column=0, padx=20, pady=19, sticky='e')
+        slider.grid(row=1, column=1, padx=20, pady=5, sticky='w')
+        slider_label.grid(row=3, column=1)
+
+        lanch_button.grid(columnspan=2, pady=8)
+
+        #Canvas_2
+        global entry_base
+        label_cerca_base = Label(canvas_2,
+                                 text='Ricerca Domande\nper parole chiave:',
+                                 font=('ariel', 16, 'bold'), bg='#b8e6fe')
+
+        def on_enter(e):
+            entry_base.delete(0, 'end')
+
+        def on_leave(e):
+            name = entry_base.get()
+            if name == '':
+                entry_base.insert(0)
+                # ura\''',\''certificato di sicurezza\'"")
+
+        entry_base = Entry(canvas_2, font=("ariel", 12, " italic"), width=30)
+
+        entry_base.insert(0, 'es. "giardinetto", "sicurezza", "figura", ecc..')
+        entry_base.bind('<FocusIn>', on_enter)
+        entry_base.bind('<FocusOut>', on_leave)
+
+        base_button_cerca = Button(canvas_2, text='Genera Scheda\ncon ricerca avanzata', font=("ariel", 16, " bold"),
+                                   relief=RAISED, command=self.funz_base_button_ricerca, bg='black', fg='blue',
+                                   height=4,
+                                   width=13)
+
+        # Canvas_2 place widgets
+        canvas_2.grid_columnconfigure((0, 1), weight=1)
+        label_cerca_base.grid(row=1, column=0, padx=40, pady=10)
+        entry_base.grid(row=1, column=1, padx=40, pady=5)
+        base_button_cerca.grid(columnspan=2, pady=7)
+
+        # Canvas_3
+
+        # Simuluazione Button
+        simulazione_button = Button(canvas_3, text='Genera Scheda\nFAC-SIMILE esame', font=("ariel", 16, " bold"),
+                                    relief=RAISED, command=self.lanch_simulazione_esame, bg='#ffc0cb', fg='red',
+                                    height=4,
+                                    width=13)
+
+        dom_sbagliate_button = Button(canvas_3, text='Quesiti sbagliati\nprecedentemente', font=("ariel", 16, " bold"),
+                                      relief=RAISED, command=lanch_quiz_domande_sbagliate, bg='#ffc0cb', fg='#686883',
+                                      height=4,
+                                      width=13)
+
+        oppure_label = Label(canvas_3, text='Oppure', font=('ariel', 16, 'bold'), bg='#b8e6fe', borderwidth=0)
+
+        canvas_3.grid_rowconfigure(0, weight=1)
+        canvas_3.grid_rowconfigure(1, weight=1)
+        canvas_3.grid_columnconfigure(0, weight=1)
+        canvas_3.grid_columnconfigure(1, weight=1)
+        canvas_3.grid_columnconfigure(2, weight=1)
+
+        simulazione_button.grid(row=0, column=2, pady=10)
+        oppure_label.grid(row=0, column=1, pady=10)
+        dom_sbagliate_button.grid(row=0, column=0, pady=10)
+
+        global img_cestino
+
+        img_cestino = PhotoImage(file='Images/cestino.png')
+        cancella_memoria_button = Button(canvas_3, image=img_cestino, command=cancella_memoria)
+        cancella_memoria_button.place(x=220, y=30)
+
+        # Canvas_4
+
+        global img_arrow
+        img_arrow = PhotoImage(file='Images/return.png')
+        return_menu_bottom = Button(canvas_4, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
+                                    relief=RAISED, command=launch_landing_page)
 
         return_menu_bottom.pack()
 
@@ -253,14 +411,14 @@ class Menu:
         ############################################################################################
     @staticmethod
     def lanch_quiz_personalizzato():
-        gui_setup_base.destroy()
+        tk_obj.destroy()
         lanch_Quiz(numero_domande.get(),
                    # metodo get serva a prendere il valore della variabile numero domande, che altrimenti sarebbe PY_VAR
                    argomento_selezionato.get())
 
     @staticmethod
     def lanch_simulazione_esame():
-        gui_setup_base.destroy()
+        tk_obj.destroy()
         lanch_Scheda()
 
     @staticmethod
@@ -273,10 +431,115 @@ class Menu:
             if text in str(domanda):
                 index_domande_base.append(index)
             index += 1
-        gui_setup_base.destroy()
+        tk_obj.destroy()
         lanch_base_cerca()
 
         ############################################################################################
+
+
+# Menu Quiz Vela
+class SetupQuizVela:
+    def __init__(self):
+        self.show_page()
+
+    def show_page(self):
+        # Label
+
+        messaggio_benvenuto = "Quiz Vela"
+        benvenuto_label = Label(gui_setup_vela, text=messaggio_benvenuto,
+                                font=('ariel', 18, 'bold'),
+                                bg='#b8e6fe', fg='#778899', justify='center')
+        benvenuto_label.pack(padx=50, pady=10, fill='x', expand=False)
+
+        # Create Canvas
+        canvas_1 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
+        canvas_1.pack(pady=10, padx=50, fill='x', expand=False)
+        canvas_2 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
+        canvas_2.pack(pady=20, padx=50, fill='x', expand=False)
+        canvas_3 = Canvas(gui_setup_vela, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_3.pack(padx=50, fill='x', expand=False, )
+
+        # Canvas_1
+
+        # Widget Canvas_1
+        label_domande_vela = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg='#ffc0cb')
+
+        # SLIDER - Canvas 1
+        global num_dom_vela
+        num_dom_vela = IntVar(gui_setup_vela)
+        slider_vela = Scale(canvas_1, from_=1, to=50, orient='horizontal', variable=num_dom_vela, cursor='boat',
+                            width=30, length=300, bg='#ffc0cb')
+        slider_label_vela = Label(canvas_1, text=' -- da 1 domanda a 50 domande --', font=("ariel", 10, " italic"),
+                                  bg='#ffc0cb')
+
+        # BUTTON - Canvas 1
+        vela_button_1 = Button(canvas_1, text='Genera Scheda\nQuiz Vela', font=("ariel", 16, " bold"),
+                               relief=RAISED, command=self.funz_vela_button_1, bg='black', fg='blue', height=4,
+                               width=13)
+
+        # PLACE Widgets Canvas 1
+        canvas_1.grid_columnconfigure((0, 1), weight=1)
+        label_domande_vela.grid(row=1, column=0, padx=20, pady=19, sticky='e')
+        slider_vela.grid(row=1, column=1, padx=20, pady=5, sticky='w')
+        slider_label_vela.grid(row=3, column=1)
+        vela_button_1.grid(columnspan=2, pady=5)
+
+        # Canvas_2
+
+        global entry_vela
+        label_domande_vela = Label(canvas_2,
+                                   text='Genera scheda\ncon ricerca avanzata',
+                                   font=('ariel', 16, 'bold'), bg='#ffc0cb')
+
+        def on_enter(e):
+            entry_vela.delete(0, 'end')
+
+        def on_leave(e):
+            name = entry_vela.get()
+            if name == '':
+                entry_vela.insert(0, 'es. "randa", "tangone", ecc..')
+
+        entry_vela = Entry(canvas_2, font=("ariel", 12, " italic"), width=30)
+        entry_vela.insert(0, 'es. "randa", "tangone", ecc..')
+        entry_vela.bind('<FocusIn>', on_enter)
+        entry_vela.bind('<FocusOut>', on_leave)
+
+        vela_button_2 = Button(canvas_2, text='Genera Scheda\ncon ricerca avanzata', font=("ariel", 16, " bold"),
+                               relief=RAISED, command=self.funz_vela_button_2, bg='black', fg='green', height=4,
+                               width=13)
+
+        # Canvas_2 place widgets
+        canvas_2.grid_columnconfigure((0, 1), weight=1)
+        label_domande_vela.grid(row=1, column=0, padx=40, pady=19)
+        entry_vela.grid(row=1, column=1, padx=40, pady=5)
+        vela_button_2.grid(columnspan=2, pady=5)
+
+        # canvas_3 buttons
+
+        global img_arrow
+        img_arrow = PhotoImage(file='Images/return.png')
+        return_menu_bottom = Button(canvas_3, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
+                                    relief=RAISED, command=launch_landing_page)
+
+        return_menu_bottom.pack()
+        final_label = Label(canvas_3, text='Created by Lorenzo Tumminello', bg='#b8e6fe', font=("ariel", 10, "italic"))
+        final_label.pack(pady=5)
+
+    ############################################################################################
+    def funz_vela_button_1(self):
+        lanch_quiz_vela(num_dom_vela.get())
+
+    def funz_vela_button_2(self):
+        global index_domande
+        index_domande = []
+        text = entry_vela.get()
+        index = 0
+        for domanda in question_vela:
+            if text in str(domanda):
+                index_domande.append(index)
+            index += 1
+        lanch_quiz_vela_cerca()
+
 
 class Quiz:
     def __init__(self, n_domande, argomento):
@@ -853,34 +1116,34 @@ class QuizBaseCerca:
 
 def lanch_menu():
     global menu
-    global gui_setup_base
+    global tk_obj
     try:
-        gui_menu_1.destroy()
-        gui_setup_base = Tk()
+        gui_landing_page.destroy()
+        tk_obj = Tk()
         height = 730
         width = 730
-        left = (gui_setup_base.winfo_screenwidth() - width) / 2
-        top = (gui_setup_base.winfo_screenheight() - height) / 2
+        left = (tk_obj.winfo_screenwidth() - width) / 2
+        top = (tk_obj.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui_setup_base.geometry(geometry)
+        tk_obj.geometry(geometry)
         # gui_menu_base.resizable(False,False)
-        gui_setup_base.title("Quiz Patente Nautica - Menu Quiz Base")
-        gui_setup_base.configure(background='#b8e6fe')
-        menu = Menu()
-        gui_setup_base.mainloop()
+        tk_obj.title("Quiz Patente Nautica - Menu Quiz Base")
+        tk_obj.configure(background='#b8e6fe')
+        menu = SetupQuizBase()
+        tk_obj.mainloop()
     except:
-        gui_setup_base = Tk()
+        tk_obj = Tk()
         height = 730
         width = 730
-        left = (gui_setup_base.winfo_screenwidth() - width) / 2
-        top = (gui_setup_base.winfo_screenheight() - height) / 2
+        left = (tk_obj.winfo_screenwidth() - width) / 2
+        top = (tk_obj.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui_setup_base.geometry(geometry)
+        tk_obj.geometry(geometry)
         # gui_menu_base.resizable(False,False)
-        gui_setup_base.title("Quiz Patente Nautica - Menu Quiz Base")
-        gui_setup_base.configure(background='#b8e6fe')
-        menu = Menu()
-        gui_setup_base.mainloop()
+        tk_obj.title("Quiz Patente Nautica - Menu Quiz Base")
+        tk_obj.configure(background='#b8e6fe')
+        menu = SetupQuizBase()
+        tk_obj.mainloop()
 
 
 def lanch_Quiz(num, argo):  # aggiungere tema
@@ -942,7 +1205,7 @@ def lanch_quiz_domande_sbagliate():
         pass
 
     else:
-        gui_setup_base.destroy()
+        tk_obj.destroy()
         gui_quiz_base = Tk()
         height = 630
         width = 810
@@ -1017,109 +1280,6 @@ def elimina_quesito_memory(index):
     except:
         pass
 
-
-# Menu Quiz Vela
-class MenuVela:
-    def __init__(self):
-        self.show_menu()
-
-    def show_menu(self):
-        # Label
-
-        messaggio_benvenuto = "Quiz Vela"
-        benvenuto_label = Label(gui_setup_vela, text=messaggio_benvenuto,
-                                font=('ariel', 18, 'bold'),
-                                bg='#b8e6fe', fg='#778899', justify='center')
-        benvenuto_label.pack(padx=50, pady=10, fill='x', expand=False)
-
-        # Create Canvas
-        canvas_1 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
-        canvas_1.pack(pady=10, padx=50, fill='x', expand=False)
-        canvas_2 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
-        canvas_2.pack(pady=20, padx=50, fill='x', expand=False)
-        canvas_3 = Canvas(gui_setup_vela, bg='#b8e6fe', bd=2, highlightthickness=0)
-        canvas_3.pack(padx=50, fill='x', expand=False, )
-
-        # Canvas_1
-
-        # Widget Canvas_1
-        label_domande_vela = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg='#ffc0cb')
-
-        # SLIDER - Canvas 1
-        global num_dom_vela
-        num_dom_vela = IntVar(gui_setup_vela)
-        slider_vela = Scale(canvas_1, from_=1, to=50, orient='horizontal', variable=num_dom_vela, cursor='boat',
-                            width=30, length=300, bg='#ffc0cb')
-        slider_label_vela = Label(canvas_1, text=' -- da 1 domanda a 50 domande --', font=("ariel", 10, " italic"),
-                                  bg='#ffc0cb')
-
-        # BUTTON - Canvas 1
-        vela_button_1 = Button(canvas_1, text='Genera Scheda\nQuiz Vela', font=("ariel", 16, " bold"),
-                               relief=RAISED, command=self.funz_vela_button_1, bg='black', fg='blue', height=4,
-                               width=13)
-
-        # PLACE Widgets Canvas 1
-        canvas_1.grid_columnconfigure((0, 1), weight=1)
-        label_domande_vela.grid(row=1, column=0, padx=20, pady=19, sticky='e')
-        slider_vela.grid(row=1, column=1, padx=20, pady=5, sticky='w')
-        slider_label_vela.grid(row=3, column=1)
-        vela_button_1.grid(columnspan=2, pady=5)
-
-        # Canvas_2
-
-        global entry_vela
-        label_domande_vela = Label(canvas_2,
-                                   text='Genera scheda\ncon ricerca avanzata',
-                                   font=('ariel', 16, 'bold'), bg='#ffc0cb')
-
-        def on_enter(e):
-            entry_vela.delete(0, 'end')
-
-        def on_leave(e):
-            name = entry_vela.get()
-            if name == '':
-                entry_vela.insert(0, 'es. "randa", "tangone", ecc..')
-
-        entry_vela = Entry(canvas_2, font=("ariel", 12, " italic"), width=30)
-        entry_vela.insert(0, 'es. "randa", "tangone", ecc..')
-        entry_vela.bind('<FocusIn>', on_enter)
-        entry_vela.bind('<FocusOut>', on_leave)
-
-        vela_button_2 = Button(canvas_2, text='Genera Scheda\ncon ricerca avanzata', font=("ariel", 16, " bold"),
-                               relief=RAISED, command=self.funz_vela_button_2, bg='black', fg='green', height=4,
-                               width=13)
-
-        # Canvas_2 place widgets
-        canvas_2.grid_columnconfigure((0, 1), weight=1)
-        label_domande_vela.grid(row=1, column=0, padx=40, pady=19)
-        entry_vela.grid(row=1, column=1, padx=40, pady=5)
-        vela_button_2.grid(columnspan=2, pady=5)
-
-        # canvas_3 buttons
-
-        global img_arrow
-        img_arrow = PhotoImage(file='Images/return.png')
-        return_menu_bottom = Button(canvas_3, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
-                                    relief=RAISED, command=lanch_landing_page)
-
-        return_menu_bottom.pack()
-        final_label = Label(canvas_3, text='Created by Lorenzo Tumminello', bg='#b8e6fe', font=("ariel", 10, "italic"))
-        final_label.pack(pady=5)
-
-    ############################################################################################
-    def funz_vela_button_1(self):
-        lanch_quiz_vela(num_dom_vela.get())
-
-    def funz_vela_button_2(self):
-        global index_domande
-        index_domande = []
-        text = entry_vela.get()
-        index = 0
-        for domanda in question_vela:
-            if text in str(domanda):
-                index_domande.append(index)
-            index += 1
-        lanch_quiz_vela_cerca()
 
 
 class QuizVela:
@@ -1413,7 +1573,7 @@ def lanch_menu_vela():  # TODO scrivere codice fz lancia menu
     global menu
     global gui_setup_vela
     try:
-        gui_menu_1.destroy()
+        gui_landing_page.destroy()
         gui_setup_vela = Tk()
         height = 650
         width = 700
@@ -1424,7 +1584,7 @@ def lanch_menu_vela():  # TODO scrivere codice fz lancia menu
         # menu.resizable(False,False)
         gui_setup_vela.title("Quiz Patente Nautica - Menu Vela")
         gui_setup_vela.configure(background='#b8e6fe')
-        menu = MenuVela()
+        menu = SetupQuizVela()
         gui_setup_vela.mainloop()
     except:
         gui_setup_vela = Tk()
@@ -1436,7 +1596,7 @@ def lanch_menu_vela():  # TODO scrivere codice fz lancia menu
         gui_setup_vela.geometry(geometry)
         gui_setup_vela.title("Quiz Patente Nautica - Menu Vela")
         gui_setup_vela.configure(background='#b8e6fe')
-        menu = MenuVela()
+        menu = SetupQuizVela()
         gui_setup_vela.mainloop()
 
 
@@ -1483,4 +1643,4 @@ def lanch_quiz_vela_cerca():
         lanch_menu_vela()
 
 
-lanch_landing_page()
+launch_landing_page()
