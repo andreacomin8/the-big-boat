@@ -23,3 +23,6 @@ guardare il PEP8 dei warning che ti suggerisce come fare alcune modifiche:
 - except senza richiamo all'eccezione
 - variabili globali (non le conosco)
 - metodi a cui passi il self ma non lo usano (@statichmethod)
+
+
+Creare metodo che distrugge e lancia una nuova finestra
