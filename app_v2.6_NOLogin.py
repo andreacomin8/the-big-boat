@@ -34,12 +34,10 @@ sottocategoria_vela = data_vela['sottocategoria']
 options_vela = ['Vero', 'Falso']
 figure_vela = data_vela['Immagini']
 
-
 # Menu Iniziale
-class Menu_iniziale:
+class LandingPage:
     def __init__(self):
         self.show_menu_iniziale()
-
     def show_menu_iniziale(self):
         messaggio_benvenuto = "Benvenuto\\a!\nQui puoi esercitarti con i nuovi quiz ministeriali per il conseguimento\ndella patente nautica.\n\nScegli con quali quiz vuoi esercitarti:"
         benvenuto_label = Label(gui_menu_1, text=messaggio_benvenuto,
@@ -70,16 +68,17 @@ class Menu_iniziale:
                             font=("ariel", 10, "italic"))
         final_label.place(relx=0.37, rely=0.90)
 
-
-def lanch_menu_iniziale():
+def lanch_landing_page():
     global menu_iniziale
     global gui_menu_1
+
     try:
-        gui_menu_base.destroy()
+        gui_setup_base.destroy()
     except:
         pass
+
     try:
-        gui.destroy()
+        gui_setup_vela.destroy()
     except:
         pass
 
@@ -94,7 +93,7 @@ def lanch_menu_iniziale():
         gui_menu_1.resizable(False, False)
         gui_menu_1.title("Quiz Patente Nautica - Menu Iniziale")
         gui_menu_1.configure(background='#b8e6fe')
-        menu_iniziale = Menu_iniziale()
+        menu_iniziale = LandingPage()
         gui_menu_1.mainloop()
 
 
@@ -108,7 +107,7 @@ class Menu:
         # Label
 
         messaggio_benvenuto = "Quiz Base"
-        benvenuto_label = Label(gui_menu_base, text=messaggio_benvenuto,
+        benvenuto_label = Label(gui_setup_base, text=messaggio_benvenuto,
                                 font=('ariel', 20, 'bold'),
                                 bg='#b8e6fe', fg='#778899', justify='center')
         benvenuto_label.pack(padx=50, pady=5)
@@ -117,16 +116,16 @@ class Menu:
         ############################################################################################
 
         # Create Canvas
-        canvas_1 = Canvas(gui_menu_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_1 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_1.pack(padx=50, pady=10, fill='x', expand=False)
 
-        canvas_2 = Canvas(gui_menu_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_2 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_2.pack(padx=50, fill='x', expand=False, pady=10)
 
-        canvas_3 = Canvas(gui_menu_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
+        canvas_3 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
         canvas_3.pack(padx=50, fill='x', expand=False, pady=10)
 
-        canvas_4 = Canvas(gui_menu_base, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_4 = Canvas(gui_setup_base, bg='#b8e6fe', bd=2, highlightthickness=0)
         canvas_4.pack(padx=50, fill='x', expand=False)
 
         ############################################################################################
@@ -244,7 +243,7 @@ class Menu:
         global img_arrow
         img_arrow = PhotoImage(file='Images/return.png')
         return_menu_bottom = Button(canvas_4, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
-                                    relief=RAISED, command=lanch_menu_iniziale)
+                                    relief=RAISED, command=lanch_landing_page)
 
         return_menu_bottom.pack()
 
@@ -252,18 +251,20 @@ class Menu:
         final_label.pack(pady=10)
 
         ############################################################################################
-
-    def lanch_quiz_personalizzato(self):
-        gui_menu_base.destroy()
+    @staticmethod
+    def lanch_quiz_personalizzato():
+        gui_setup_base.destroy()
         lanch_Quiz(numero_domande.get(),
                    # metodo get serva a prendere il valore della variabile numero domande, che altrimenti sarebbe PY_VAR
                    argomento_selezionato.get())
 
-    def lanch_simulazione_esame(self):
-        gui_menu_base.destroy()
+    @staticmethod
+    def lanch_simulazione_esame():
+        gui_setup_base.destroy()
         lanch_Scheda()
 
-    def funz_base_button_ricerca(self):
+    @staticmethod
+    def funz_base_button_ricerca():
         global index_domande_base
         index_domande_base = []
         text = entry_base.get()
@@ -272,11 +273,10 @@ class Menu:
             if text in str(domanda):
                 index_domande_base.append(index)
             index += 1
-        gui_menu_base.destroy()
+        gui_setup_base.destroy()
         lanch_base_cerca()
 
         ############################################################################################
-
 
 class Quiz:
     def __init__(self, n_domande, argomento):
@@ -853,34 +853,34 @@ class QuizBaseCerca:
 
 def lanch_menu():
     global menu
-    global gui_menu_base
+    global gui_setup_base
     try:
         gui_menu_1.destroy()
-        gui_menu_base = Tk()
+        gui_setup_base = Tk()
         height = 730
         width = 730
-        left = (gui_menu_base.winfo_screenwidth() - width) / 2
-        top = (gui_menu_base.winfo_screenheight() - height) / 2
+        left = (gui_setup_base.winfo_screenwidth() - width) / 2
+        top = (gui_setup_base.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui_menu_base.geometry(geometry)
+        gui_setup_base.geometry(geometry)
         # gui_menu_base.resizable(False,False)
-        gui_menu_base.title("Quiz Patente Nautica - Menu Quiz Base")
-        gui_menu_base.configure(background='#b8e6fe')
+        gui_setup_base.title("Quiz Patente Nautica - Menu Quiz Base")
+        gui_setup_base.configure(background='#b8e6fe')
         menu = Menu()
-        gui_menu_base.mainloop()
+        gui_setup_base.mainloop()
     except:
-        gui_menu_base = Tk()
+        gui_setup_base = Tk()
         height = 730
         width = 730
-        left = (gui_menu_base.winfo_screenwidth() - width) / 2
-        top = (gui_menu_base.winfo_screenheight() - height) / 2
+        left = (gui_setup_base.winfo_screenwidth() - width) / 2
+        top = (gui_setup_base.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui_menu_base.geometry(geometry)
+        gui_setup_base.geometry(geometry)
         # gui_menu_base.resizable(False,False)
-        gui_menu_base.title("Quiz Patente Nautica - Menu Quiz Base")
-        gui_menu_base.configure(background='#b8e6fe')
+        gui_setup_base.title("Quiz Patente Nautica - Menu Quiz Base")
+        gui_setup_base.configure(background='#b8e6fe')
         menu = Menu()
-        gui_menu_base.mainloop()
+        gui_setup_base.mainloop()
 
 
 def lanch_Quiz(num, argo):  # aggiungere tema
@@ -942,7 +942,7 @@ def lanch_quiz_domande_sbagliate():
         pass
 
     else:
-        gui_menu_base.destroy()
+        gui_setup_base.destroy()
         gui_quiz_base = Tk()
         height = 630
         width = 810
@@ -1027,17 +1027,17 @@ class MenuVela:
         # Label
 
         messaggio_benvenuto = "Quiz Vela"
-        benvenuto_label = Label(gui, text=messaggio_benvenuto,
+        benvenuto_label = Label(gui_setup_vela, text=messaggio_benvenuto,
                                 font=('ariel', 18, 'bold'),
                                 bg='#b8e6fe', fg='#778899', justify='center')
         benvenuto_label.pack(padx=50, pady=10, fill='x', expand=False)
 
         # Create Canvas
-        canvas_1 = Canvas(gui, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
+        canvas_1 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
         canvas_1.pack(pady=10, padx=50, fill='x', expand=False)
-        canvas_2 = Canvas(gui, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
+        canvas_2 = Canvas(gui_setup_vela, bg="#ffc0cb", bd=2, highlightthickness=0, relief='ridge')
         canvas_2.pack(pady=20, padx=50, fill='x', expand=False)
-        canvas_3 = Canvas(gui, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_3 = Canvas(gui_setup_vela, bg='#b8e6fe', bd=2, highlightthickness=0)
         canvas_3.pack(padx=50, fill='x', expand=False, )
 
         # Canvas_1
@@ -1047,7 +1047,7 @@ class MenuVela:
 
         # SLIDER - Canvas 1
         global num_dom_vela
-        num_dom_vela = IntVar(gui)
+        num_dom_vela = IntVar(gui_setup_vela)
         slider_vela = Scale(canvas_1, from_=1, to=50, orient='horizontal', variable=num_dom_vela, cursor='boat',
                             width=30, length=300, bg='#ffc0cb')
         slider_label_vela = Label(canvas_1, text=' -- da 1 domanda a 50 domande --', font=("ariel", 10, " italic"),
@@ -1100,7 +1100,7 @@ class MenuVela:
         global img_arrow
         img_arrow = PhotoImage(file='Images/return.png')
         return_menu_bottom = Button(canvas_3, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
-                                    relief=RAISED, command=lanch_menu_iniziale)
+                                    relief=RAISED, command=lanch_landing_page)
 
         return_menu_bottom.pack()
         final_label = Label(canvas_3, text='Created by Lorenzo Tumminello', bg='#b8e6fe', font=("ariel", 10, "italic"))
@@ -1136,7 +1136,7 @@ class QuizVela:
         self.display_question()
         self.show_image()
 
-        self.opt_selected = IntVar(gui)  # 1_Vero, 2_falso
+        self.opt_selected = IntVar(gui_setup_vela)  # 1_Vero, 2_falso
         self.opts = self.radio_buttons()
         self.display_options()
         self.buttons()
@@ -1161,7 +1161,7 @@ class QuizVela:
                 mb.showinfo("Risposte sbagliate",
                             f"Domanda:\n{question_vela[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}")
 
-        gui.destroy()
+        gui_setup_vela.destroy()
         lanch_menu_vela()
 
     def check_ans(self, q_no):
@@ -1195,7 +1195,7 @@ class QuizVela:
             self.show_image()
 
     def display_title(self):
-        title = Label(gui, text="Quiz Vela!", width=60, bg="#ffc0cb", fg="white", font=("ariel", 20, "bold"))
+        title = Label(gui_setup_vela, text="Quiz Vela!", width=60, bg="#ffc0cb", fg="white", font=("ariel", 20, "bold"))
         # title.place(x=0, y=0)
         title.pack(fill='x')
 
@@ -1204,30 +1204,30 @@ class QuizVela:
         global q_tema
         text_tema = tema_vela[self.q_selected]
 
-        num_question = Label(gui, text=f"Domanda {self.q_no + 1} di {self.data_size} - {text_tema}", fg='red',
+        num_question = Label(gui_setup_vela, text=f"Domanda {self.q_no + 1} di {self.data_size} - {text_tema}", fg='red',
                              font=("ariel", 15), )
         num_question.pack()
 
     def display_question(self):
         global question_label
         text = question_vela[self.q_selected]
-        question_label = Label(gui, text=text, width=60, height=0,
+        question_label = Label(gui_setup_vela, text=text, width=60, height=0,
                                font=('ariel', 18, 'bold'), anchor='w', wraplength=700, justify=LEFT, borderwidth=3)
         question_label.place(x=30, y=55)
         # question_label.pack(side=TOP,fill='x',expand=True, anchor=N)
 
     def quit_button_function(self):
-        gui.destroy()
+        gui_setup_vela.destroy()
         lanch_menu_vela()
 
     def buttons(self):
-        next_button = Button(gui, text="Conferma", command=self.next_btn,
+        next_button = Button(gui_setup_vela, text="Conferma", command=self.next_btn,
                              width=10, height=3, bg="white", fg="green", font=("ariel", 16, "bold"), relief=RAISED)
         # next_button.pack(expand=True)
         # next_button.pack(side=TOP,expand=True, anchor=N)
         next_button.place(relx=0.5, y=270, anchor=S)
 
-        quit_button = Button(gui, text="Torna al\nMenu", command=self.quit_button_function,
+        quit_button = Button(gui_setup_vela, text="Torna al\nMenu", command=self.quit_button_function,
                              width=5, bg="red", fg="red", font=("ariel", 16, " bold"), relief=RAISED)
         quit_button.place(x=720, y=0)
 
@@ -1235,7 +1235,7 @@ class QuizVela:
         q_list = []
         x_pos = 320
         while len(q_list) < 2:
-            radio_btn = Radiobutton(gui, text=" ", variable=self.opt_selected,
+            radio_btn = Radiobutton(gui_setup_vela, text=" ", variable=self.opt_selected,
                                     value=len(q_list) + 1, font=("ariel", 18,), anchor='w', wraplength=700,
                                     justify=LEFT)
             q_list.append(radio_btn)
@@ -1257,7 +1257,7 @@ class QuizVela:
         if figure_vela[self.q_selected] != 0:
             image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure_vela[self.q_selected]) + '.jpg')
             image = ImageOps.contain(image, (230, 230))
-            canvas = Canvas(gui, width=image.size[0] + 10, height=image.size[1] + 10)
+            canvas = Canvas(gui_setup_vela, width=image.size[0] + 10, height=image.size[1] + 10)
             img = ImageTk.PhotoImage(image)
             canvas.create_image(10, 10, anchor=NW, image=img)
             canvas.place(x=300, y=300)
@@ -1281,7 +1281,7 @@ class QuizVelaCerca:
         self.display_question()
         self.show_image()
 
-        self.opt_selected = IntVar(gui)  # 1_Vero, 2_falso
+        self.opt_selected = IntVar(gui_setup_vela)  # 1_Vero, 2_falso
         self.opts = self.radio_buttons()
         self.display_options()
         self.buttons()
@@ -1305,7 +1305,7 @@ class QuizVelaCerca:
                 risposta_corretta = answer_vela[self.risposte_sbagliate[i]]  # [opzione_corretta - 1]
                 mb.showinfo("Risposte sbagliate",
                             f"Domanda:\n{question_vela[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}")
-        gui.destroy()
+        gui_setup_vela.destroy()
         lanch_menu_vela()
 
     def check_ans(self, q_no):
@@ -1339,7 +1339,7 @@ class QuizVelaCerca:
             self.show_image()
 
     def display_title(self):
-        title = Label(gui, text="Quiz Vela!", width=60, bg="#ffc0cb", fg="white", font=("ariel", 20, "bold"))
+        title = Label(gui_setup_vela, text="Quiz Vela!", width=60, bg="#ffc0cb", fg="white", font=("ariel", 20, "bold"))
         # title.place(x=0, y=0)
         title.pack(fill='x')
 
@@ -1348,30 +1348,30 @@ class QuizVelaCerca:
         global q_tema
         text_tema = tema_vela[self.q_selected]
 
-        num_question = Label(gui, text=f" Trovate {self.data_size} domande! Domanda {self.q_no + 1} - {text_tema}",
+        num_question = Label(gui_setup_vela, text=f" Trovate {self.data_size} domande! Domanda {self.q_no + 1} - {text_tema}",
                              fg='red', font=("ariel", 17))
         num_question.pack(padx=20)
 
     def display_question(self):
         global question_label
         text = question_vela[self.q_selected]
-        question_label = Label(gui, text=text, width=60, height=0,
+        question_label = Label(gui_setup_vela, text=text, width=60, height=0,
                                font=('ariel', 18, 'bold'), anchor='w', wraplength=700, justify=LEFT, borderwidth=3)
         question_label.place(x=40, y=55)
         # question_label.pack(side=TOP,fill='x',expand=True, anchor=N)
 
     def quit_button_function(self):
-        gui.destroy()
+        gui_setup_vela.destroy()
         lanch_menu_vela()
 
     def buttons(self):
-        next_button = Button(gui, text="Conferma", command=self.next_btn,
+        next_button = Button(gui_setup_vela, text="Conferma", command=self.next_btn,
                              width=10, height=3, bg="white", fg="green", font=("ariel", 16, "bold"), relief=RAISED)
         # next_button.pack(expand=True)
         # next_button.pack(side=TOP,expand=True, anchor=N)
         next_button.place(relx=0.5, y=250, anchor=S)
 
-        quit_button = Button(gui, text="Torna al\nMenu", command=self.quit_button_function,
+        quit_button = Button(gui_setup_vela, text="Torna al\nMenu", command=self.quit_button_function,
                              width=5, bg="red", fg="red", font=("ariel", 16, " bold"), relief=RAISED)
         quit_button.place(x=720, y=0)
 
@@ -1379,7 +1379,7 @@ class QuizVelaCerca:
         q_list = []
         x_pos = 0.45
         while len(q_list) < 2:
-            radio_btn = Radiobutton(gui, text=" ", variable=self.opt_selected, value=len(q_list) + 1,
+            radio_btn = Radiobutton(gui_setup_vela, text=" ", variable=self.opt_selected, value=len(q_list) + 1,
                                     font=("ariel", 18,), anchor='w', wraplength=700, justify=LEFT)
             q_list.append(radio_btn)
             # radio_btn.pack(side=TOP,fill='x',anchor=E)
@@ -1400,7 +1400,7 @@ class QuizVelaCerca:
         if figure_vela[self.q_selected] != 0:
             image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure_vela[self.q_selected]) + '.jpg')
             image = ImageOps.contain(image, (230, 230))
-            canvas = Canvas(gui, width=image.size[0] + 10, height=image.size[1] + 10)
+            canvas = Canvas(gui_setup_vela, width=image.size[0] + 10, height=image.size[1] + 10)
             img = ImageTk.PhotoImage(image)
             canvas.create_image(10, 10, anchor=NW, image=img)
             canvas.place(x=300, y=300)
@@ -1411,76 +1411,76 @@ class QuizVelaCerca:
 
 def lanch_menu_vela():  # TODO scrivere codice fz lancia menu
     global menu
-    global gui
+    global gui_setup_vela
     try:
         gui_menu_1.destroy()
-        gui = Tk()
+        gui_setup_vela = Tk()
         height = 650
         width = 700
-        left = (gui.winfo_screenwidth() - width) / 2
-        top = (gui.winfo_screenheight() - height) / 2
+        left = (gui_setup_vela.winfo_screenwidth() - width) / 2
+        top = (gui_setup_vela.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui.geometry(geometry)
+        gui_setup_vela.geometry(geometry)
         # menu.resizable(False,False)
-        gui.title("Quiz Patente Nautica - Menu Vela")
-        gui.configure(background='#b8e6fe')
+        gui_setup_vela.title("Quiz Patente Nautica - Menu Vela")
+        gui_setup_vela.configure(background='#b8e6fe')
         menu = MenuVela()
-        gui.mainloop()
+        gui_setup_vela.mainloop()
     except:
-        gui = Tk()
+        gui_setup_vela = Tk()
         height = 650
         width = 700
-        left = (gui.winfo_screenwidth() - width) / 2
-        top = (gui.winfo_screenheight() - height) / 2
+        left = (gui_setup_vela.winfo_screenwidth() - width) / 2
+        top = (gui_setup_vela.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top)
-        gui.geometry(geometry)
-        gui.title("Quiz Patente Nautica - Menu Vela")
-        gui.configure(background='#b8e6fe')
+        gui_setup_vela.geometry(geometry)
+        gui_setup_vela.title("Quiz Patente Nautica - Menu Vela")
+        gui_setup_vela.configure(background='#b8e6fe')
         menu = MenuVela()
-        gui.mainloop()
+        gui_setup_vela.mainloop()
 
 
 def lanch_quiz_vela(no_domande):
     global quiz_vela
-    global gui
+    global gui_setup_vela
     try:
-        gui.destroy()
+        gui_setup_vela.destroy()
     finally:
-        gui = Tk()
+        gui_setup_vela = Tk()
         height = 650
         width = 820
-        left = (gui.winfo_screenwidth() - width) / 2
-        top = (gui.winfo_screenheight() - height) / 2
+        left = (gui_setup_vela.winfo_screenwidth() - width) / 2
+        top = (gui_setup_vela.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui.geometry(geometry)
-        gui.resizable(False, False)
-        gui.title("Quesiti Vela")
+        gui_setup_vela.geometry(geometry)
+        gui_setup_vela.resizable(False, False)
+        gui_setup_vela.title("Quesiti Vela")
         quiz_vela = QuizVela(no_domande)
-        gui.mainloop()
+        gui_setup_vela.mainloop()
 
 
 def lanch_quiz_vela_cerca():
     global quiz_vela
-    global gui
+    global gui_setup_vela
     try:
-        gui.destroy()
+        gui_setup_vela.destroy()
     finally:
-        gui = Tk()
+        gui_setup_vela = Tk()
         height = 650
         width = 820
-        left = (gui.winfo_screenwidth() - width) / 2
-        top = (gui.winfo_screenheight() - height) / 2
+        left = (gui_setup_vela.winfo_screenwidth() - width) / 2
+        top = (gui_setup_vela.winfo_screenheight() - height) / 2
         geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
-        gui.geometry(geometry)
-        gui.resizable(False, False)
-        gui.title("Quesiti Vela")
+        gui_setup_vela.geometry(geometry)
+        gui_setup_vela.resizable(False, False)
+        gui_setup_vela.title("Quesiti Vela")
     try:
         quiz_vela = QuizVelaCerca(index_domande)
-        gui.mainloop()
+        gui_setup_vela.mainloop()
     except:
         mb.showinfo(title='Attenzione', message="Attenzione!\nParola Non Trovata!")
-        gui.destroy()
+        gui_setup_vela.destroy()
         lanch_menu_vela()
 
 
-lanch_menu_iniziale()
+lanch_landing_page()
