@@ -13,14 +13,14 @@ from tkinter import messagebox as mb
 
 # leggere json
 with open('questions_data.json') as f:
-    data = json.load(f)
+    data_base = json.load(f)
 
-data = pd.DataFrame(data)
-question = data['domande']
-options = data['opzioni_risposta']
-answer = data['risposta_corretta']
-figure = data['immagine']
-tema = data['tema']
+data_base = pd.DataFrame(data_base)
+question_base = data_base['domande']
+options_base = data_base['opzioni_risposta']
+answer_base = data_base['risposta_corretta']
+figure_base = data_base['immagine']
+tema_base = data_base['tema']
 
 with open('quiz_vela.json') as f:
     data_vela = json.load(f)
@@ -29,13 +29,13 @@ with open('quiz_vela.json') as f:
 data_vela = pd.DataFrame(data_vela)
 question_vela = data_vela['Domanda']
 answer_vela = data_vela['V_F']
+# argomento vela estratti ma non utilizzati (probabilmente non serve rifare il parse del PDF)
 tema_vela = data_vela['Argomento']
 sottocategoria_vela = data_vela['sottocategoria']
 options_vela = ['Vero', 'Falso']
 figure_vela = data_vela['Immagini']
 
 
-# Menu Iniziale
 class LandingPage:
     def __init__(self):
         self.show_menu_iniziale()
@@ -113,8 +113,6 @@ class SetupQuiz:
 
         for canvas_obj in self.canvas_list:
             canvas_obj.canvas.pack(canvas_obj.pack)
-
-            
         ############################################################################################
 
         # Create Canvas
@@ -253,7 +251,6 @@ class SetupQuiz:
         final_label.pack(pady=10)
 
         ############################################################################################
-
 
 
 # Menu Quiz Base
@@ -427,7 +424,7 @@ class SetupQuizBase:
         index_domande_base = []
         text = entry_base.get()
         index = 0
-        for domanda in question:
+        for domanda in question_base:
             if text in str(domanda):
                 index_domande_base.append(index)
             index += 1
@@ -550,9 +547,9 @@ class Quiz:
         self.risposte_date = []
         self.argomento = argomento
         if argomento == 'TUTTI':
-            self.q_selected = choice(question.index)
+            self.q_selected = choice(question_base.index)
         else:
-            self.q_selected = choice(data[tema == self.argomento].index)
+            self.q_selected = choice(data_base[tema_base == self.argomento].index)
 
         self.q_precedent_selected = []
         self.display_title()
@@ -578,20 +575,20 @@ class Quiz:
             mb.showinfo("Result", f"Risultati:\n{correct}\n{wrong}\n\nPeccato!\nNon Hai superato la prova\n")
 
         for i in range(len(self.risposte_sbagliate)):
-            opzione_corretta = answer[self.risposte_sbagliate[i]]
-            risposta_corretta = options[self.risposte_sbagliate[i]][opzione_corretta - 1]
+            opzione_corretta = answer_base[self.risposte_sbagliate[i]]
+            risposta_corretta = options_base[self.risposte_sbagliate[i]][opzione_corretta - 1]
             try:
-                risposta_data = options[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
+                risposta_data = options_base[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
             except:
                 risposta_data = 'nessuna risposta selezionata'
             mb.showinfo("Risposte sbagliate",
-                        f"Domanda:\n{question[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}\n\nRisposta data:\n{risposta_data}")
+                        f"Domanda:\n{question_base[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}\n\nRisposta data:\n{risposta_data}")
 
         gui_quiz_base.destroy()
         lanch_menu()
 
     def check_ans(self, q_no):
-        if self.opt_selected.get() == answer[self.q_selected]:
+        if self.opt_selected.get() == answer_base[self.q_selected]:
             return True
         else:
             self.risposte_sbagliate.append(self.q_selected)
@@ -606,9 +603,9 @@ class Quiz:
 
         while temp_q_selection in self.q_precedent_selected:
             if self.argomento == 'TUTTI':
-                temp_q_selection = choice(question.index)
+                temp_q_selection = choice(question_base.index)
             else:
-                temp_q_selection = choice(data[tema == self.argomento].index)
+                temp_q_selection = choice(data_base[tema_base == self.argomento].index)
         else:
             self.q_selected = temp_q_selection  # randint(0,len(question)
 
@@ -643,7 +640,7 @@ class Quiz:
     def display_num_question(self):
         global num_question
         global q_tema
-        text_tema = tema[self.q_selected]
+        text_tema = tema_base[self.q_selected]
 
         num_question = Label(gui_quiz_base, text=f"Domanda {self.q_no + 1} di {self.data_size} - {text_tema}", fg='red',
                              font=("ariel", 15))
@@ -651,7 +648,7 @@ class Quiz:
 
     def display_question(self):
         global question_label
-        text = question[self.q_selected]
+        text = question_base[self.q_selected]
         question_label = Label(gui_quiz_base, text=text, font=('ariel', 18, 'bold'), anchor='w', wraplength=680,
                                justify=LEFT, borderwidth=3)
         # question_label.place(x=30, y=55)
@@ -681,8 +678,8 @@ class Quiz:
         global canvas
         global img
         img = 0
-        if figure[self.q_selected] != 0:
-            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure[self.q_selected]) + '.jpg')
+        if figure_base[self.q_selected] != 0:
+            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure_base[self.q_selected]) + '.jpg')
             image = ImageOps.contain(image, (230, 230))
             canvas = Canvas(gui_quiz_base, width=image.size[0], height=image.size[1])
             img = ImageTk.PhotoImage(image)
@@ -704,7 +701,7 @@ class Quiz:
     def display_options(self):
         val = 0
         self.opt_selected.set(4)
-        for option in options[str(self.q_selected)]:
+        for option in options_base[str(self.q_selected)]:
             self.opts[val]['text'] = option
             val += 1
 
@@ -805,13 +802,13 @@ class QuizSchedaEsame:
               wraplength=700, justify=LEFT, borderwidth=3).pack(fill=BOTH)
 
         for i in range(len(self.risposte_sbagliate)):
-            opzione_corretta = answer[self.risposte_sbagliate[i]]
-            risposta_corretta = options[self.risposte_sbagliate[i]][opzione_corretta - 1]
+            opzione_corretta = answer_base[self.risposte_sbagliate[i]]
+            risposta_corretta = options_base[self.risposte_sbagliate[i]][opzione_corretta - 1]
             try:
-                risposta_data = options[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
+                risposta_data = options_base[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
             except:
                 risposta_data = 'Nessuna risposta'
-            Label(second_frame, text=str(i + 1) + " - " + question[self.risposte_sbagliate[i]],
+            Label(second_frame, text=str(i + 1) + " - " + question_base[self.risposte_sbagliate[i]],
                   font=('ariel', 12, 'bold'), anchor='w', wraplength=700, justify=LEFT, borderwidth=3).pack(fill=BOTH)
             Label(second_frame, text="Risposta corretta: " + risposta_corretta, fg='green', font=('ariel', 12),
                   anchor='w', wraplength=700, justify=LEFT, borderwidth=3).pack(fill=BOTH)
@@ -831,13 +828,13 @@ class QuizSchedaEsame:
         new.mainloop()
 
     def check_ans(self, q_no):
-        if tema[self.q_selected] not in self.risposte_corrette_categorie.keys():
-            self.risposte_corrette_categorie[tema[self.q_selected]] = 0
+        if tema_base[self.q_selected] not in self.risposte_corrette_categorie.keys():
+            self.risposte_corrette_categorie[tema_base[self.q_selected]] = 0
         else:
             pass
 
-        if self.opt_selected.get() == answer[self.q_selected]:
-            self.risposte_corrette_categorie[tema[self.q_selected]] += 1
+        if self.opt_selected.get() == answer_base[self.q_selected]:
+            self.risposte_corrette_categorie[tema_base[self.q_selected]] += 1
             return True
         else:
             self.risposte_sbagliate.append(self.q_selected)
@@ -879,7 +876,7 @@ class QuizSchedaEsame:
         global num_question
         global q_tema
 
-        text_tema = tema[self.q_selected]
+        text_tema = tema_base[self.q_selected]
 
         if text_tema not in self.risposte_categorie_totali.keys():
             self.risposte_categorie_totali[text_tema] = 1
@@ -892,7 +889,7 @@ class QuizSchedaEsame:
 
     def display_question(self):
         global question_label
-        text = question[self.q_selected]
+        text = question_base[self.q_selected]
         question_label = Label(gui_quiz_base, text=text,
                                font=('ariel', 18, 'bold'), anchor='w', wraplength=680, justify=LEFT, borderwidth=3)
         question_label.pack(fill=BOTH, padx=20, pady=20)
@@ -922,8 +919,8 @@ class QuizSchedaEsame:
         global canvas
         global img
         img = 0
-        if figure[self.q_selected] != 0:
-            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure[self.q_selected]) + '.jpg')
+        if figure_base[self.q_selected] != 0:
+            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure_base[self.q_selected]) + '.jpg')
             image = ImageOps.contain(image, (230, 230))
             canvas = Canvas(gui_quiz_base, width=image.size[0], height=image.size[1])
             img = ImageTk.PhotoImage(image)
@@ -947,7 +944,7 @@ class QuizSchedaEsame:
     def display_options(self):
         val = 0
         self.opt_selected.set(4)
-        for option in options[str(self.q_selected)]:
+        for option in options_base[str(self.q_selected)]:
             self.opts[val]['text'] = option
             val += 1
 
@@ -983,21 +980,21 @@ class QuizBaseCerca:
             mb.showinfo("Result", f"Risultati:\n{correct}\n{wrong}\n\nPeccato!\nNon Hai superato la prova\n")
 
         for i in range(len(self.risposte_sbagliate)):
-            opzione_corretta = answer[self.risposte_sbagliate[i]]
-            risposta_corretta = options[self.risposte_sbagliate[i]][opzione_corretta - 1]
+            opzione_corretta = answer_base[self.risposte_sbagliate[i]]
+            risposta_corretta = options_base[self.risposte_sbagliate[i]][opzione_corretta - 1]
             try:
-                risposta_data = options[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
+                risposta_data = options_base[self.risposte_sbagliate[i]][self.risposte_date[i] - 1]
             except:
                 risposta_data = 'nessuna risposta selezionata'
 
             mb.showinfo("Risposte sbagliate",
-                        f"Domanda:\n{question[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}\n\nRisposta data:\n{risposta_data}")
+                        f"Domanda:\n{question_base[self.risposte_sbagliate[i]]}\n\nRisposta corretta:\n{risposta_corretta}\n\nRisposta data:\n{risposta_data}")
 
         gui_quiz_base.destroy()
         lanch_menu()
 
     def check_ans(self):
-        if self.opt_selected.get() == answer[self.q_selected]:
+        if self.opt_selected.get() == answer_base[self.q_selected]:
             elimina_quesito_memory(self.q_selected)
             return True
         else:
@@ -1046,14 +1043,14 @@ class QuizBaseCerca:
     def display_num_question(self):
         global num_question
         global q_tema
-        text_tema = tema[self.q_selected]
+        text_tema = tema_base[self.q_selected]
         num_question = Label(gui_quiz_base, text=f"Domanda {self.q_no + 1} di {self.data_size} - {text_tema}", fg='red',
                              font=("ariel", 15))
         num_question.pack()
 
     def display_question(self):
         global question_label
-        text = question[self.q_selected]
+        text = question_base[self.q_selected]
         question_label = Label(gui_quiz_base, text=text,
                                font=('ariel', 18, 'bold'), anchor='w', wraplength=680, justify=LEFT, borderwidth=3)
         # question_label.place(x=30, y=55)
@@ -1081,8 +1078,8 @@ class QuizBaseCerca:
         global canvas
         global img
         img = 0
-        if figure[self.q_selected] != 0:
-            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure[self.q_selected]) + '.jpg')
+        if figure_base[self.q_selected] != 0:
+            image = PIL.Image.open('Immagini Pieghevole/Im' + str(figure_base[self.q_selected]) + '.jpg')
             image = ImageOps.contain(image, (300, 230))
             canvas = Canvas(gui_quiz_base, width=image.size[0], height=image.size[1])
             img = ImageTk.PhotoImage(image, master=canvas)
@@ -1109,7 +1106,7 @@ class QuizBaseCerca:
     def display_options(self):
         val = 0
         self.opt_selected.set(4)
-        for option in options[str(self.q_selected)]:
+        for option in options_base[str(self.q_selected)]:
             self.opts[val]['text'] = option
             val += 1
 
@@ -1171,7 +1168,7 @@ def genera_scheda_esame():
                     'NAVIGAZIONE CARTOGRAFICA ED ELETTRONICA': 4, 'NORMATIVA DIPORTISTICA E AMBIENTALE': 3}
     for i in scheda_esame.keys():
         for y in range(scheda_esame[i]):
-            scheda_esame_index.append((choice(data[tema == i].index)))
+            scheda_esame_index.append((choice(data_base[tema_base == i].index)))
     return scheda_esame_index
 
 
