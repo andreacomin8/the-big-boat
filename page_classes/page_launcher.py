@@ -14,7 +14,7 @@ def launch_setup_quiz_base_page():
     tk_object = Tk()
 
     # retrieve_page_content()
-    a = setup_quiz_base.SetupQuizBasePage(tk_object, 630, 400, "Setup Quiz Base", "#b8e6fe")
+    a = setup_quiz_base.SetupQuizBasePage(tk_object, 730, 780, "Setup Quiz Base", "#b8e6fe")
     a.show_page()
 
 
