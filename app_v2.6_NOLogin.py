@@ -100,13 +100,31 @@ def launch_landing_page():
 
 
 class SetupQuiz:
-    def __init__(self, tk_obj, header_label, canvas_list):
-        self.tk_obj = tk_obj
+    def __init__(self, header_label, canvas_list):
         self.header_label = header_label
         self.canvas_list = canvas_list
-
         self.show_page()
-    # canvas_list = [{canvas : {tk_obj, bg:'#b8e6fe', bd:2, highlightthickness:0, relief:'ridge'}}, pack : {padx:50, pady:10, fill:'x', expand:False}}, {}]
+
+    '''
+    canvas_list = [
+        {
+            "canvas":{
+                "tk_obj",
+                "bg":"#b8e6fe",
+                "bd":2,
+                "highlightthickness":0,
+                "relief":"ridge"
+            },
+            "pack":{
+                "padx":50,
+                "pady":10,
+                "fill":"x",
+                "expand":false
+            }
+        },
+        {}
+    ]
+        '''
     def show_page(self):
 
         self.header_label.pack(padx=50, pady=10, fill='x', expand=False)
@@ -114,150 +132,9 @@ class SetupQuiz:
         for canvas_obj in self.canvas_list:
             canvas_obj.canvas.pack(canvas_obj.pack)
 
-            
-        ############################################################################################
-
-        # Create Canvas
-        canvas_1 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
-        canvas_1.pack(padx=50, pady=10, fill='x', expand=False)
-
-        canvas_2 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
-        canvas_2.pack(padx=50, fill='x', expand=False, pady=10)
-
-        canvas_3 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
-        canvas_3.pack(padx=50, fill='x', expand=False, pady=10)
-
-        canvas_4 = Canvas(tk_obj, bg='#b8e6fe', bd=2, highlightthickness=0,)
-        canvas_4.pack(padx=50, fill='x', expand=False)
-
-        ############################################################################################
-        # canvas_1 Labels
-        label_argomento = Label(canvas_1,
-                                text='Seleziona Argomento: ',
-                                font=('ariel', 16, 'bold'), bg='#b8e6fe')
-
-        label_domande = Label(canvas_1,
-                              text='Numero Domande : ',
-                              font=('ariel', 16, 'bold'), bg='#b8e6fe')
-
-        # canvas_1 Combobox
-        global argomento_selezionato
-        argomento_selezionato = StringVar()
-        combobox = Combobox(canvas_1, textvariable=argomento_selezionato, width=30, )
-        combobox['values'] = ['TUTTI', 'TEORIA DELLO SCAFO', 'MOTORI', 'SICUREZZA DELLA NAVIGAZIONE',
-                              'MANOVRA E CONDOTTA', 'COLREG E SEGNALAMENTO MARITTIMO', 'METEOROLOGIA',
-                              'NAVIGAZIONE CARTOGRAFICA ED ELETTRONICA', 'NORMATIVA DIPORTISTICA E AMBIENTALE']
-        combobox['state'] = 'readonly'  # impedisce di scrivere nel menu a tendina
-        combobox.set("TUTTI")
-
-        combobox.bind('<<ComboboxSelected>>', argomento_selezionato.get())
-
-        # canvas_1 slider
-        global numero_domande
-        numero_domande = IntVar()
-        slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
-                       length=300, bg='#b8e6fe')
-        slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
-                             bg='#b8e6fe')
-
-        # canvas_1 buttons
-        lanch_button = Button(canvas_1, text='Genera Scheda\npersonalizzata', font=("ariel", 16, " bold"),
-                              relief=RAISED, command=self.lanch_quiz_personalizzato, bg='#b8e6fe', fg='green', height=4,
-                              width=13)
-
-        # Canvas_1 place widgets
-        canvas_1.grid_columnconfigure((0, 1), weight=1)
-
-        label_argomento.grid(row=0, column=0, padx=20, pady=20, sticky='e')
-        combobox.grid(row=0, column=1, padx=20, pady=20, sticky='w')
-
-        label_domande.grid(row=1, column=0, padx=20, pady=19, sticky='e')
-        slider.grid(row=1, column=1, padx=20, pady=5, sticky='w')
-        slider_label.grid(row=3, column=1)
-
-        lanch_button.grid(columnspan=2, pady=8)
-
-        #Canvas_2
-        global entry_base
-        label_cerca_base = Label(canvas_2,
-                                 text='Ricerca Domande\nper parole chiave:',
-                                 font=('ariel', 16, 'bold'), bg='#b8e6fe')
-
-        def on_enter(e):
-            entry_base.delete(0, 'end')
-
-        def on_leave(e):
-            name = entry_base.get()
-            if name == '':
-                entry_base.insert(0)
-                # ura\''',\''certificato di sicurezza\'"")
-
-        entry_base = Entry(canvas_2, font=("ariel", 12, " italic"), width=30)
-
-        entry_base.insert(0, 'es. "giardinetto", "sicurezza", "figura", ecc..')
-        entry_base.bind('<FocusIn>', on_enter)
-        entry_base.bind('<FocusOut>', on_leave)
-
-        base_button_cerca = Button(canvas_2, text='Genera Scheda\ncon ricerca avanzata', font=("ariel", 16, " bold"),
-                                   relief=RAISED, command=self.funz_base_button_ricerca, bg='black', fg='blue',
-                                   height=4,
-                                   width=13)
-
-        # Canvas_2 place widgets
-        canvas_2.grid_columnconfigure((0, 1), weight=1)
-        label_cerca_base.grid(row=1, column=0, padx=40, pady=10)
-        entry_base.grid(row=1, column=1, padx=40, pady=5)
-        base_button_cerca.grid(columnspan=2, pady=7)
-
-        # Canvas_3
-
-        # Simuluazione Button
-        simulazione_button = Button(canvas_3, text='Genera Scheda\nFAC-SIMILE esame', font=("ariel", 16, " bold"),
-                                    relief=RAISED, command=self.lanch_simulazione_esame, bg='#ffc0cb', fg='red',
-                                    height=4,
-                                    width=13)
-
-        dom_sbagliate_button = Button(canvas_3, text='Quesiti sbagliati\nprecedentemente', font=("ariel", 16, " bold"),
-                                      relief=RAISED, command=lanch_quiz_domande_sbagliate, bg='#ffc0cb', fg='#686883',
-                                      height=4,
-                                      width=13)
-
-        oppure_label = Label(canvas_3, text='Oppure', font=('ariel', 16, 'bold'), bg='#b8e6fe', borderwidth=0)
-
-        canvas_3.grid_rowconfigure(0, weight=1)
-        canvas_3.grid_rowconfigure(1, weight=1)
-        canvas_3.grid_columnconfigure(0, weight=1)
-        canvas_3.grid_columnconfigure(1, weight=1)
-        canvas_3.grid_columnconfigure(2, weight=1)
-
-        simulazione_button.grid(row=0, column=2, pady=10)
-        oppure_label.grid(row=0, column=1, pady=10)
-        dom_sbagliate_button.grid(row=0, column=0, pady=10)
-
-        global img_cestino
-
-        img_cestino = PhotoImage(file='Images/cestino.png')
-        cancella_memoria_button = Button(canvas_3, image=img_cestino, command=cancella_memoria)
-        cancella_memoria_button.place(x=220, y=30)
-
-        # Canvas_4
-
-        global img_arrow
-        img_arrow = PhotoImage(file='Images/return.png')
-        return_menu_bottom = Button(canvas_4, text='Menu', font=("ariel", 10, " bold"), image=img_arrow, compound="top",
-                                    relief=RAISED, command=launch_landing_page)
-
-        return_menu_bottom.pack()
-
-        final_label = Label(canvas_4, text='Created by Lorenzo Tumminello', bg='#b8e6fe', font=("ariel", 10, "italic"))
-        final_label.pack(pady=10)
-
-        ############################################################################################
-
-
 
 # Menu Quiz Base
-class SetupQuizBase:
+class SetupQuizBase(SetupQuiz):
     def __init__(self):
         self.show_page()
 
@@ -324,7 +201,7 @@ class SetupQuizBase:
         # Canvas_1 place widgets
         canvas_1.grid_columnconfigure((0, 1), weight=1)
 
-        label_argomento.grid(row=0, column=0, padx=20, pady=20, sticky='e')
+        label_argomento.grid(row=0, column=0, padx=0, pady=20, sticky='e')
         combobox.grid(row=0, column=1, padx=20, pady=20, sticky='w')
 
         label_domande.grid(row=1, column=0, padx=20, pady=19, sticky='e')
