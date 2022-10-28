@@ -19,7 +19,7 @@ def launch_setup_quiz_base_page():
 def launch_choose_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
-    a = choose_modality.ChooseModalityPage(tk_object, 920, 460, "Scegli la modalità", "#b8e6fe")
+    a = choose_modality.ChooseModalityPage(tk_object, 920, 720, "Scegli la modalità", "#b8e6fe")
     a.show_page()
 
 def launch_topic_modality_page():

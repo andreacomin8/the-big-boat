@@ -8,6 +8,7 @@ class SetupModalityPage(GuiPage):
     def __init__(self, tk_object, width, height, title, background):
         super().__init__(tk_object, width, height, title, background)
         # self.header_data_obj, self.page_elements = self.get_settings()
+        self.fill_base_page()
 
     def fill_base_page(self):
         global header_base_img
@@ -18,12 +19,6 @@ class SetupModalityPage(GuiPage):
         canvas_1.pack(padx=50 ,pady=10, fill='x')
 
     def topic_modality(self):
-        global header_base_img
-        global canvas_1
-        header_base_img = PhotoImage(file='Images/header_base_920.png')
-        Label(self.tk_object, image=header_base_img, bg='#b8e6fe').pack()
-        canvas_1 = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=2, relief='ridge')
-        canvas_1.pack(padx=50 ,pady=10, fill='x')
 
         l1_c1 = Label(canvas_1, text='Seleziona Argomento: ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
         l2_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
@@ -61,7 +56,6 @@ class SetupModalityPage(GuiPage):
         slider_label.grid(row=3, column=1, pady=5)
         b1_c1.grid(row=5, columnspan=2, pady=10)
 
-    @staticmethod
     def search_modality(self):
         global entry_base
         label_cerca_base = Label(canvas_1,

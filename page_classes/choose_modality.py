@@ -47,28 +47,29 @@ class ChooseModalityPage(GuiPage):
         self.tk_object.config(menu=menubar)
 
 
-        l1 = Label(canvas_0, text='Scegli la modalità: ', font=('ariel', 20, 'bold'), bg='#b8e6fe',)
+        l1 = Label(canvas_0, text='Scegli una modalità: ', font=('ariel', 20, 'bold'), bg='#b8e6fe')
         l1.pack()
 
         def pers_button_command():
             page_launcher.pages_transition(self.tk_object, "setup_topic_modality")
 
         global img_pers_button
-        img_pers_button = PhotoImage(file='Images/Images_modalità/topic.png')
+        img_pers_button = PhotoImage(file='Images/Images_modalità/topic_1.png')
         pers_button = Button(canvas_1, command=pers_button_command, relief=RAISED, image= img_pers_button, height=img_pers_button.height(), width=img_pers_button.width())
+        sub_label_topic_img = PhotoImage(file='Images/Images_modalità/sub_label_topic.png')
         pers_button.pack()
 
         def ricerca_button_command():
             page_launcher.pages_transition(self.tk_object, "setup_search_modality")
 
         global ricerca_button_img
-        ricerca_button_img = PhotoImage(file='Images/Images_modalità/lente.png')
+        ricerca_button_img = PhotoImage(file='Images/Images_modalità/lente_1.png')
         ricerca_button = Button(canvas_2, command=ricerca_button_command, image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
         ricerca_button.pack()
 
 
         global fac_simile_button_img
-        fac_simile_button_img = PhotoImage(file='Images/Images_modalità/exam.png')
+        fac_simile_button_img = PhotoImage(file='Images/Images_modalità/exam_1.png')
         fac_simile_button = Button(canvas_3, image=fac_simile_button_img, relief=RAISED, height=fac_simile_button_img.height(), width=fac_simile_button_img.width())
         fac_simile_button.pack()
 
@@ -76,7 +77,7 @@ class ChooseModalityPage(GuiPage):
             page_launcher.pages_transition(self.tk_object, "setup_error_modality")
 
         global sbagliati_button_img
-        sbagliati_button_img = PhotoImage(file='Images/Images_modalità/wrong.png')
+        sbagliati_button_img = PhotoImage(file='Images/Images_modalità/wrong_1.png')
         sbagliati_button = Button(canvas_4, command=sbagliati_button_command, image=sbagliati_button_img, relief=RAISED, height=sbagliati_button_img.height(), width=sbagliati_button_img.width())
         sbagliati_button.pack()
 
