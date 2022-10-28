@@ -1,5 +1,5 @@
 class GuiPage:
-    def __init__(self, tk_object, width, height, title, background, resizable=None, header_data_obj=None,
+    def __init__(self, tk_object, width, height, title, background, side=None, resizable=None, header_data_obj=None,
                  page_elements=None):
         """
             Parameters
@@ -31,6 +31,7 @@ class GuiPage:
         # components to fill the page
         self.header_data_obj = header_data_obj
         self.page_elements = page_elements
+        self.side = side
 
     '''
         header_data_obj = {label: header_label, pack_params: {padx: 50, pady: 10, fill='x', expand=False}}
@@ -74,4 +75,5 @@ class GuiPage:
         # place elements
         for canvas_obj in self.page_elements:
             canvas_obj['canvas'].pack(**canvas_obj['pack_params'])
+
         self.tk_object.mainloop()

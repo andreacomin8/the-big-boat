@@ -1,7 +1,7 @@
 from father_page import GuiPage
 from tkinter.ttk import *
 from tkinter import *
-# import page_launcher
+import page_launcher
 
 
 class SetupQuizBasePage(GuiPage):
@@ -10,9 +10,8 @@ class SetupQuizBasePage(GuiPage):
         self.header_data_obj, self.page_elements = self.get_settings()
 
     def get_settings(self):
-        messaggio_benvenuto = "Quiz Base"
         global header_base_img
-        header_base_img = PhotoImage(file= 'Images/header_base.png')
+        header_base_img = PhotoImage(file= 'Images/header_base_920.png')
 
         label_content = {"label": Label(self.tk_object, image=header_base_img, font=('ariel', 20, 'bold'),
                                         bg='#b8e6fe', fg='#778899', justify='center'),
@@ -27,6 +26,22 @@ class SetupQuizBasePage(GuiPage):
                            {"canvas": canvas_2, "pack_params": {"padx": 50, "pady": 10, "fill": "x", "expand": False}},
                            {"canvas": canvas_3, "pack_params": {"padx": 50, "pady": 10, "fill": "x", "expand": False}},
                            {"canvas": canvas_4, "pack_params": {"padx": 50, "pady": 10, "fill": "x", "expand": False}}]
+
+        #menubar
+        def donothing():
+            x=0
+
+        menubar = Menu(self.tk_object)
+        filemenu = Menu(menubar, tearoff=0)
+        filemenu.add_command(label="Nuovo Quiz", command=donothing)
+        filemenu.add_command(label="Save", command=donothing)
+        filemenu.add_separator()
+        filemenu.add_command(label="Exit", command=self.tk_object.quit)
+        menubar.add_cascade(label="File", menu=filemenu)
+        rimuovimenu = Menu(menubar, tearoff=0)
+        rimuovimenu.add_command(label="Cancella Dati", command=donothing)
+        menubar.add_cascade(label="Rimuovi", menu=rimuovimenu)
+        self.tk_object.config(menu=menubar)
 
         # canvas_1
         l1_c1 = Label(canvas_1, text='Seleziona Argomento: ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
@@ -140,10 +155,6 @@ class SetupQuizBasePage(GuiPage):
 
         final_label = Label(canvas_4, text='Created by\nLorenzo Tumminello e Andrea Cominotto', bg='#b8e6fe', font=("ariel", 10, "italic"))
         final_label.pack(pady=10)
-
-
-
-
 
 
         return label_content, canvas_contents

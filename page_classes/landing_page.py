@@ -31,7 +31,7 @@ class LandingPage(GuiPage):
         button_sx.pack(pady=50, padx=50)
 
         def button_dx_command():
-            page_launcher.pages_transition(self.tk_object, "landing_page")
+            page_launcher.pages_transition(self.tk_object, "choose_modality")
 
         global img_vela
         img_vela = PhotoImage(file='Images/vela.png')
