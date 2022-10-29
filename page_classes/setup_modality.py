@@ -4,7 +4,7 @@ from tkinter import *
 
 
 # modalità argomento
-class SetupModalityPage(GuiPage):
+class SetupModalityPage():
     def __init__(self, tk_object, width, height, title, background):
         super().__init__(tk_object, width, height, title, background)
         # self.header_data_obj, self.page_elements = self.get_settings()
@@ -30,7 +30,8 @@ class SetupModalityPage(GuiPage):
                               'MANOVRA E CONDOTTA', 'COLREG E SEGNALAMENTO MARITTIMO', 'METEOROLOGIA',
                               'NAVIGAZIONE CARTOGRAFICA ED ELETTRONICA', 'NORMATIVA DIPORTISTICA E AMBIENTALE']
 
-        combobox['state'] = 'readonly'  # impedisce di scrivere nel menu a tendina
+        # impedisce di scrivere nel menu a tendina
+        combobox['state'] = 'readonly'
         # default "tutti"
         combobox.set("TUTTI")
         combobox.bind('<<ComboboxSelected>>', argomento_selezionato.get())
