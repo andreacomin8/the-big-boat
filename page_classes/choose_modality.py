@@ -57,7 +57,7 @@ class ChooseModalityPage(GuiPage):
 
         global fac_simile_button_img
         fac_simile_button_img = PhotoImage(file='Images/Images_modalità/exam_1.png')
-        fac_simile_button = Button(canvas_3, command=self.tk_object.quit,
+        fac_simile_button = Button(canvas_3, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_page")),
                                    image=fac_simile_button_img,
                                    relief=RAISED,
                                    height=fac_simile_button_img.height(),

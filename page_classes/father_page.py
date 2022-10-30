@@ -1,6 +1,7 @@
+from tkinter import *
+
 class GuiPage:
-    def __init__(self, tk_object, width, height, title, background, side=None, resizable=None, header_data_obj=None,
-                 page_elements=None):
+    def __init__(self, tk_object, width, height, title, background,side=None, resizable=None):
         """
             Parameters
             ----------
@@ -14,9 +15,7 @@ class GuiPage:
                 background colour.
             header_data_obj : dict
                 e.g. {label: Label, pack_params: dict}.
-            page_elements : list of PageElement
-                list of elements and positions to fill the page
-                e.g. [{canvas: {}, pack_params: {}}].
+
             resizable : tuple
                not required, allow resize page sides
                e.g. (False, False).
@@ -29,31 +28,11 @@ class GuiPage:
         self.title = title
         self.background = background
         # components to fill the page
-        self.header_data_obj = header_data_obj
-        self.page_elements = page_elements
         self.side = side
 
     '''
         header_data_obj = {label: header_label, pack_params: {padx: 50, pady: 10, fill='x', expand=False}}
 
-        page_elements = [
-            {
-                "canvas":{
-                    "tk_obj",
-                    "bg":"#b8e6fe",
-                    "bd":2,
-                    "highlightthickness":0,
-                    "relief":"ridge"
-                },
-                "pack_params":{
-                    "padx":50,
-                    "pady":10,
-                    "fill":"x",
-                    "expand":false
-                }
-            },
-            {}
-        ]
     '''
 
     @staticmethod
@@ -69,11 +48,12 @@ class GuiPage:
             self.tk_object.resizable(self.resizable)
         self.tk_object.title(self.title)
         self.tk_object.configure(background=self.background)
-
-        # place label
-        self.header_data_obj['label'].pack(**self.header_data_obj['pack_params'])
-        # place elements
-        for canvas_obj in self.page_elements:
-            canvas_obj['canvas'].pack(**canvas_obj['pack_params'])
-
         self.tk_object.mainloop()
+
+    def back_button(self, page_transitor):
+        global img_back
+        img_back = PhotoImage(file='Images/back_button.png')
+        quit_button = Button(self.tk_object, command=page_transitor, text="Torna al Menu",
+                             font=("ariel", 12, " bold"), image=img_back, compound="top",bg='#b8e6fe')
+        quit_button.place(relx=1, rely=0, anchor='ne')
+

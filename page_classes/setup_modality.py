@@ -1,10 +1,10 @@
 from father_page import GuiPage
 from tkinter.ttk import *
 from tkinter import *
-
+from quiz_page import topic_quiz,search_quiz
 
 # modalità argomento
-class SetupModalityPage():
+class SetupModalityPage(GuiPage):
     def __init__(self, tk_object, width, height, title, background):
         super().__init__(tk_object, width, height, title, background)
         # self.header_data_obj, self.page_elements = self.get_settings()
@@ -17,6 +17,7 @@ class SetupModalityPage():
         Label(self.tk_object, image=header_base_img, bg='#b8e6fe').pack()
         canvas_1 = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=2, relief='ridge')
         canvas_1.pack(padx=50 ,pady=10, fill='x')
+
 
     def topic_modality(self):
 
@@ -44,9 +45,12 @@ class SetupModalityPage():
         slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
                              bg='#b8e6fe')
 
+        def topic_command():
+            topic_quiz(argomento_selezionato.get(), numero_domande.get())
+
         global img_pers_button
         img_pers_button = PhotoImage(file='Images/personalizzata_button.png')
-        b1_c1 = Button(canvas_1, relief=RAISED, image= img_pers_button, height=img_pers_button.height(), width=img_pers_button.width())
+        b1_c1 = Button(canvas_1, command=topic_command, relief=RAISED, image=img_pers_button, height=img_pers_button.height(), width=img_pers_button.width())
 
         # place widgets
         canvas_1.grid_columnconfigure((0,1), weight=2)
@@ -56,6 +60,7 @@ class SetupModalityPage():
         slider.grid(row=1, column=1)
         slider_label.grid(row=3, column=1, pady=5)
         b1_c1.grid(row=5, columnspan=2, pady=10)
+
 
     def search_modality(self):
         global entry_base
@@ -78,14 +83,19 @@ class SetupModalityPage():
         entry_base.bind('<FocusIn>', on_enter)
         entry_base.bind('<FocusOut>', on_leave)
 
+
+        def search_command():
+            search_quiz(entry_base.get())
+
         global ricerca_button_img
         ricerca_button_img = PhotoImage(file='Images/ricerca_button.png')
-        ricerca_button = Button(canvas_1, image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+        ricerca_button = Button(canvas_1,command=search_command , image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
 
         # Canvas_2 place widgets
         label_cerca_base.pack(pady=10)
         entry_base.pack(pady=10)
         ricerca_button.pack(pady=10)
+
 
     def error_modality(self):
         # todo il numero di domande massimo deve corrisponde al numero di domande totali sbaglaite

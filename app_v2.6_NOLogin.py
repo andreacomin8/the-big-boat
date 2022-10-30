@@ -12,7 +12,7 @@ from random import choice
 from tkinter import messagebox as mb
 
 # leggere json
-with open('questions_data.json') as f:
+with open('page_classes/data/base_data.json') as f:
     data = json.load(f)
 
 data = pd.DataFrame(data)
@@ -22,7 +22,7 @@ answer = data['risposta_corretta']
 figure = data['immagine']
 tema = data['tema']
 
-with open('quiz_vela.json') as f:
+with open('page_classes/data/vela_data.json') as f:
     data_vela = json.load(f)
 
 # todo rimuovere pandas
