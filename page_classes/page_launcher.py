@@ -53,10 +53,18 @@ def launch_error_modality_page():
     a.show_page()
 
 
-def launch_quiz_page():
+def launch_quiz_exam_base():
     tk_object = Tk()
     # retrieve_page_content()
     a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", "#b8e6fe", QuizGenerator(base_questions).exam())
+    a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
+    a.show_page()
+
+#todo capire come passargli i parametri topic_Selcted e q_number al QuizGenerator
+def launch_quiz_topic_base():
+    tk_object = Tk()
+    # retrieve_page_content()
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", "#b8e6fe", QuizGenerator(base_questions, topic_selected="COLREG E SEGNALAMENTO MARITTIMO", q_number=10).topic())
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
 
@@ -69,7 +77,8 @@ def pages_transition(page_2_destroy, to_create):
         "setup_topic_modality": launch_topic_modality_page,
         "setup_search_modality": launch_search_modality_page,
         "setup_error_modality": launch_error_modality_page,
-        "quiz_page": launch_quiz_page,
+        "quiz_esame_base": launch_quiz_exam_base,
+        "quiz_topic_base": launch_quiz_topic_base,
         "setup_quiz_vela": 2,
         "quiz": 2,
         "results": 2

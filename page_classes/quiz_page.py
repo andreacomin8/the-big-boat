@@ -4,7 +4,7 @@ from quiz_generator import QuizGenerator
 from tkinter.ttk import *
 from tkinter import *
 import PIL.Image
-from PIL import ImageOps, ImageTk, Image
+from PIL import ImageOps, ImageTk
 
 
 
@@ -21,39 +21,13 @@ base_questions, sail_questions = load_initial_data(base_questions_path='page_cla
                                                    sail_questions_path='page_classes/data/vela_data.json')
 
 
-# test ****************************************
-def topic_quiz(topic_selected, q_number):
-    print('\nTOPIC\n')
-    test_topic = QuizGenerator(base_questions, topic_selected=topic_selected, q_number=q_number).topic()
-    print(test_topic)
-    for i in test_topic:
-        print(base_questions['domande'][i])
-
-
-def search_quiz(word_searched):
-    print('\nSEARCH\n')
-    test_search = QuizGenerator(base_questions, word_searched=word_searched).search()
-    print(test_search)
-    for i in test_search:
-        print(base_questions['domande'][i])
-
-
-def exam_quiz():
-    print('\nEXAM\n')
-    test_exam = QuizGenerator(base_questions).exam()
-    print(test_exam)
-    for i in test_exam:
-        print(base_questions['domande'][i], base_questions['opzioni_risposta'][i])
-# test ****************************************
-
-
 class QuizPage(GuiPage):
     def __init__(self, tk_object, width, height, title, background, q_index_generated):
         super().__init__(tk_object, width, height, title, background, q_index_generated)
-        self.q_indeces_list = q_index_generated
+        self.q_index_generated = q_index_generated
         self.q_no = 1
         self.i = 0
-        self.q_selected_index = self.q_indeces_list[self.i]
+        self.q_selected_index = self.q_index_generated[self.i]
         self.create_base_structure()
         self.display_info()
         self.display_q()
@@ -95,10 +69,10 @@ class QuizPage(GuiPage):
         Button(canvas_buttons, text='next', command=next_commnad).pack()
 
     def get_next_q_index(self):
-        if self.q_no < len(self.q_indeces_list):
+        if self.q_no < len(self.q_index_generated):
             self.q_no += 1
             self.i += 1
-            self.q_selected_index = self.q_indeces_list[self.i]
+            self.q_selected_index = self.q_index_generated[self.i]
 
             return self.q_selected_index
         else:
@@ -120,7 +94,7 @@ class QuizPage(GuiPage):
         self.display_image()
 
     def display_info(self):
-            text = base_questions['tema'][self.q_selected_index]
+            text = f'domanda N. {self.q_no} - {base_questions["tema"][self.q_selected_index]}'
             Label(canvas_info, text=text).pack()
 
     def display_q(self):
