@@ -1,7 +1,8 @@
 from tkinter import *
 
 class GuiPage:
-    def __init__(self, tk_object, width, height, title, background,side=None, resizable=None):
+    def __init__(self, tk_object, width, height, title, background, side=None, resizable=None):
+
         """
             Parameters
             ----------
@@ -13,13 +14,11 @@ class GuiPage:
                 page title.
             background : str
                 background colour.
-            header_data_obj : dict
-                e.g. {label: Label, pack_params: dict}.
-
             resizable : tuple
                not required, allow resize page sides
                e.g. (False, False).
         """
+
         self.tk_object = tk_object
         # params to set page shape and position
         left, top = self.calculate_left_top(tk_object, width, height)
@@ -30,10 +29,6 @@ class GuiPage:
         # components to fill the page
         self.side = side
 
-    '''
-        header_data_obj = {label: header_label, pack_params: {padx: 50, pady: 10, fill='x', expand=False}}
-
-    '''
 
     @staticmethod
     def calculate_left_top(tk, width, height):
@@ -54,6 +49,5 @@ class GuiPage:
         global img_back
         img_back = PhotoImage(file='Images/back_button.png')
         quit_button = Button(self.tk_object, command=page_transitor, text="Torna al Menu",
-                             font=("ariel", 12, " bold"), image=img_back, compound="top",bg='#b8e6fe')
+                             font=("ariel", 12, " bold"), image=img_back, compound="top" ,height=95)
         quit_button.place(relx=1, rely=0, anchor='ne')
-

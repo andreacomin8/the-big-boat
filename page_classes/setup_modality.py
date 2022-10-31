@@ -6,23 +6,25 @@ import page_launcher
 
 # modalità argomento
 class SetupModalityPage(GuiPage):
-    def __init__(self, tk_object, width, height, title, background):
+    def __init__(self, tk_object, width, height, title, background,header_path):
         super().__init__(tk_object, width, height, title, background)
         # self.header_data_obj, self.page_elements = self.get_settings()
+        self.background = background
+        self.header_path= header_path
         self.fill_base_page()
 
     def fill_base_page(self):
-        global header_base_img
+        global header_img
         global canvas_1
-        header_base_img = PhotoImage(file='Images/header_base_920.png')
-        Label(self.tk_object, image=header_base_img, bg='#b8e6fe').pack()
-        canvas_1 = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=2, relief='ridge')
+        header_img = PhotoImage(file=self.header_path)
+        Label(self.tk_object, image=header_img, bg=self.background).pack()
+        canvas_1 = Canvas(self.tk_object, bg=self.background, bd=2, highlightthickness=2, relief='ridge')
         canvas_1.pack(padx=50 ,pady=10, fill='x')
 
     def topic_modality(self):
 
-        l1_c1 = Label(canvas_1, text='Seleziona Argomento: ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
-        l2_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
+        l1_c1 = Label(canvas_1, text='Seleziona Argomento: ', font=('ariel', 16, 'bold'), bg=self.background)
+        l2_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg=self.background)
 
         global argomento_selezionato
         argomento_selezionato = StringVar()
@@ -40,9 +42,9 @@ class SetupModalityPage(GuiPage):
         global numero_domande
         numero_domande = IntVar()
         slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
-                       length=300, bg='#b8e6fe')
+                       length=300, bg=self.background)
         slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
-                             bg='#b8e6fe')
+                             bg=self.background)
 # todo sistemare il launcher
         def topic_command():
             page_launcher.pages_transition(self.tk_object, "quiz_topic_base")
@@ -64,7 +66,7 @@ class SetupModalityPage(GuiPage):
         global entry_base
         label_cerca_base = Label(canvas_1,
                                  text='Ricerca Domande per parole chiave:',
-                                 font=('ariel', 16, 'bold'), bg='#b8e6fe')
+                                 font=('ariel', 16, 'bold'), bg=self.background)
 
         def on_enter(e):
             entry_base.delete(0, 'end')
@@ -82,13 +84,9 @@ class SetupModalityPage(GuiPage):
         entry_base.bind('<FocusOut>', on_leave)
 
 
-        def search_command():
-            # search_quiz(entry_base.get())
-            return 0
-
         global ricerca_button_img
         ricerca_button_img = PhotoImage(file='Images/ricerca_button.png')
-        ricerca_button = Button(canvas_1,command=search_command , image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_base")), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
 
         # Canvas_2 place widgets
         label_cerca_base.pack(pady=10)
@@ -97,13 +95,13 @@ class SetupModalityPage(GuiPage):
 
     def error_modality(self):
         # todo il numero di domande massimo deve corrisponde al numero di domande totali sbaglaite
-        l1_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg='#b8e6fe')
+        l1_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg=self.background)
         global numero_domande
         numero_domande = IntVar()
         slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
-                       length=300, bg='#b8e6fe')
+                       length=300, bg=self.background)
         slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
-                             bg='#b8e6fe')
+                             bg=self.background)
 
         global sbagliati_button_img
         sbagliati_button_img = PhotoImage(file='Images/sbagliati_button.png')

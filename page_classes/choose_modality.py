@@ -12,7 +12,7 @@ class ChooseModalityPage(GuiPage):
 
     def fill_page(self):
         global header_base_img
-        header_base_img = PhotoImage(file='Images/header_base_920.png')
+        header_base_img = PhotoImage(file='Images/header_base.png')
         l1 = Label(self.tk_object, image=header_base_img, bg='#b8e6fe')
         l1.grid(row=0, columnspan=4)
 

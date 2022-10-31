@@ -14,13 +14,13 @@ class SetupQuizBasePage(GuiPage):
         header_base_img = PhotoImage(file= 'Images/header_base_920.png')
 
         label_content = {"label": Label(self.tk_object, image=header_base_img, font=('ariel', 20, 'bold'),
-                                        bg='#b8e6fe', fg='#778899', justify='center'),
+                                        bg=self.background, fg='#778899', justify='center'),
                          "pack_params": {"padx": 50, "pady": 3}}
 
-        canvas_1 = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
-        canvas_2 = Canvas(self.tk_object, bg="#b8e6fe", bd=2, highlightthickness=0, relief='ridge')
-        canvas_3 = Canvas(self.tk_object, bg="#b8e6fe", bd=2, highlightthickness=0, relief='ridge')
-        canvas_4 = Canvas(self.tk_object, bg="#b8e6fe", bd=0, highlightthickness=0, relief='ridge')
+        canvas_1 = Canvas(self.tk_object, bg=self.background, bd=2, highlightthickness=0, relief='ridge')
+        canvas_2 = Canvas(self.tk_object, bg=self.background, bd=2, highlightthickness=0, relief='ridge')
+        canvas_3 = Canvas(self.tk_object, bg=self.background, bd=2, highlightthickness=0, relief='ridge')
+        canvas_4 = Canvas(self.tk_object, bg=self.background, bd=0, highlightthickness=0, relief='ridge')
 
         canvas_contents = [{"canvas": canvas_1, "pack_params": {"padx": 50, "pady": 5, "fill": "x", "expand": False}},
                            {"canvas": canvas_2, "pack_params": {"padx": 50, "pady": 10, "fill": "x", "expand": False}},

@@ -1,20 +1,14 @@
 from tkinter import *
-from page_classes import landing_page, setup_quiz_base, choose_modality, setup_modality,quiz_page
+from page_classes import landing_page, choose_modality, setup_modality,quiz_page
 from quiz_page import base_questions
 from quiz_generator import QuizGenerator
+
 
 
 def launch_landing_page():
     tk_object = Tk()
     # retrieve_page_content()
     a = landing_page.LandingPage(tk_object, 630, 400, "Quiz Patente Nautica - Menu Iniziale", "#b8e6fe")
-    a.show_page()
-
-
-def launch_setup_quiz_base_page():
-    tk_object = Tk()
-    # retrieve_page_content()
-    a = setup_quiz_base.SetupQuizBasePage(tk_object, 730, 780, "Setup Quiz Base", "#b8e6fe")
     a.show_page()
 
 
@@ -29,7 +23,7 @@ def launch_choose_modality_page():
 def launch_topic_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
-    a = setup_modality.SetupModalityPage(tk_object, 730, 380, "Modalità Seleziona Argomento", "#b8e6fe")
+    a = setup_modality.SetupModalityPage(tk_object, 920, 380, "Modalità Seleziona Argomento", color_modality['topic'], header_path=headers_path['topic'])
     a.topic_modality()
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
@@ -38,7 +32,7 @@ def launch_topic_modality_page():
 def launch_search_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
-    a = setup_modality.SetupModalityPage(tk_object, 730, 380, "Modalità Ricerca Avanzata", "#b8e6fe")
+    a = setup_modality.SetupModalityPage(tk_object, 920, 380, "Modalità Ricerca Avanzata", color_modality['search'], header_path=headers_path['search'])
     a.search_modality()
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
@@ -47,7 +41,7 @@ def launch_search_modality_page():
 def launch_error_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
-    a = setup_modality.SetupModalityPage(tk_object, 730, 380, "Modalità Errori Commessi", "#b8e6fe")
+    a = setup_modality.SetupModalityPage(tk_object, 920, 380, "Modalità Errori Commessi", color_modality['error'], header_path=headers_path['error'])
     a.error_modality()
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
@@ -56,32 +50,55 @@ def launch_error_modality_page():
 def launch_quiz_exam_base():
     tk_object = Tk()
     # retrieve_page_content()
-    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", "#b8e6fe", QuizGenerator(base_questions).exam())
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['exam'], QuizGenerator(base_questions).exam(), header_path=headers_path['exam'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
+
 
 #todo capire come passargli i parametri topic_Selcted e q_number al QuizGenerator
 def launch_quiz_topic_base():
     tk_object = Tk()
     # retrieve_page_content()
-    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", "#b8e6fe", QuizGenerator(base_questions, topic_selected="COLREG E SEGNALAMENTO MARITTIMO", q_number=10).topic())
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(base_questions, topic_selected="COLREG E SEGNALAMENTO MARITTIMO", q_number=10, ).topic(), header_path=headers_path['topic'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
     a.show_page()
 
+def launch_quiz_search_base():
+    tk_object = Tk()
+    # retrieve_page_content()
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['search'], QuizGenerator(base_questions, word_searched='figur').search(), header_path=headers_path['search'])
+    a.back_button(lambda: pages_transition(tk_object, "choose_modality"))
+    a.show_page()
 
 def pages_transition(page_2_destroy, to_create):
     map_pages = {
         "landing_page": launch_landing_page,
-        "setup_quiz_base": launch_setup_quiz_base_page,
+        # "setup_quiz_base": launch_setup_quiz_base_page,
         "choose_modality": launch_choose_modality_page,
         "setup_topic_modality": launch_topic_modality_page,
         "setup_search_modality": launch_search_modality_page,
         "setup_error_modality": launch_error_modality_page,
         "quiz_esame_base": launch_quiz_exam_base,
         "quiz_topic_base": launch_quiz_topic_base,
+        "quiz_search_base": launch_quiz_search_base,
         "setup_quiz_vela": 2,
         "quiz": 2,
         "results": 2
     }
     page_2_destroy.destroy()
     map_pages[to_create]()
+
+
+headers_path = {
+    "exam": 'Images/Images_modalità/header_esame.png',
+    "topic": 'Images/Images_modalità/header_topic.png',
+    "search": 'Images/Images_modalità/header_search.png',
+    "error": 'Images/Images_modalità/header_error.png'
+}
+
+color_modality = {
+    "exam": "#ffd094" ,
+    "topic": "#e1ffd7",
+    "search": "#b8e6fe",
+    "error": "#ffc2c3"
+}
