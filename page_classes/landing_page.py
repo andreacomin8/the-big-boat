@@ -9,37 +9,34 @@ class LandingPage(GuiPage):
         self.fill_page()
 
     def fill_page(self):
-        messaggio_benvenuto = "Benvenuto\\a!\nQui puoi esercitarti con i nuovi quiz ministeriali per il " \
-                              "conseguimento\ndella patente nautica.\n\nScegli con quali quiz vuoi esercitarti:"
 
-        Label(self.tk_object, text=messaggio_benvenuto, font=('ariel', 16, 'bold'), bg='#b8e6fe',
-              fg='black', justify='center').pack(padx=50, pady=10, fill='x', expand=False)
+        global header_landing
+        header_landing = PhotoImage(file='Images/header_landing.png')
+        Label(self.tk_object, image=header_landing,highlightthickness=0).pack()
 
-        canvas_sx = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=0, relief='ridge')
-        canvas_dx = Canvas(self.tk_object, bg="#b8e6fe", bd=2, highlightthickness=0, relief='ridge')
-        canvas_sx.pack(padx=20, pady=10, side="left")
-        canvas_dx.pack(padx=20, pady=10, side="right")
+
+        messaggio_benvenuto = "Benvenuto!\nScegli con quali quiz vuoi esercitarti:"
+        Label(self.tk_object, text=messaggio_benvenuto, font=('ariel', 16, 'bold'), bg='#b8e6fe',fg='black', justify='center').pack(padx=50, pady=10, fill='x')
+
+        canvas_buttons = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=0)
+        canvas_buttons.pack(padx=25, fill='x')
 
         def button_sx_command():
-            page_launcher.pages_transition(self.tk_object, "choose_modality")
+            page_launcher.pages_transition(self.tk_object, "choose_modality_base")
 
         global img_base
-        img_base = PhotoImage(file='Images/base.png')
-        button_sx = Button(canvas_sx, text='Quiz Base', image=img_base, font=("ariel", 18, " bold"), compound="top",
-                           relief=RAISED, command=button_sx_command, bg='#b8e6fe', fg='green', height=150, width=150)
-        button_sx.pack(pady=50, padx=50)
+        img_base = PhotoImage(file='Images/base_1.png')
+        button_sx = Button(canvas_buttons, text='Quiz Base', image=img_base, relief=RAISED, command=button_sx_command)
+        button_sx.pack(side=LEFT, padx=20, pady=10)
 
         def button_dx_command():
-            page_launcher.pages_transition(self.tk_object, "choose_modality")
+            page_launcher.pages_transition(self.tk_object, "choose_modality_vela")
 
         global img_vela
-        img_vela = PhotoImage(file='Images/vela.png')
+        img_vela = PhotoImage(file='Images/vela_1.png')
 
-        button_dx = Button(canvas_dx, text='Quiz Vela', image=img_vela, font=("ariel", 18, " bold"), compound="top",
-                           relief=RAISED, command=button_dx_command, bg='#b8e6fe', fg='blue', height=150, width=150)
+        button_dx = Button(canvas_buttons, text='Quiz Vela', image=img_vela, relief=RAISED, command=button_dx_command)
+        button_dx.pack(side=LEFT)
 
-        button_dx.pack(pady=50, padx=50)
-
-        final_label = Label(text='Created by Lorenzo Tumminello\nEmail: lorenzotumminello@gmail.com', bg='#b8e6fe',
-                            font=("ariel", 10, "italic"))
-        final_label.place(relx=0.37, rely=0.90)
+        text_final_label = 'Created by\nLorenzo Tumminello & Andrea Cominotto\nEmail: lorenzotumminello@gmail.com\n\nQuiz ministeriali aggiornati!\nValidi a partire dal 1 Giugno 2022 (DD n.131 del 31/05/2022)'
+        Label(text= text_final_label, bg='#b8e6fe', font=("ariel", 10, "italic"), justify=CENTER).pack(fill='x')

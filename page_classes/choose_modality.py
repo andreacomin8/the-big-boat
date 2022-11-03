@@ -5,14 +5,14 @@ import page_launcher
 
 
 class ChooseModalityPage(GuiPage):
-    def __init__(self, tk_object, width, height, title, background):
+    def __init__(self, tk_object, width, height, title, background, header_path):
         super().__init__(tk_object, width, height, title, background)
-        # self.header_data_obj, self.page_elements = self.get_settings()
+        self.header_path = header_path
         self.fill_page()
 
     def fill_page(self):
         global header_base_img
-        header_base_img = PhotoImage(file='Images/header_base.png')
+        header_base_img = PhotoImage(file=self.header_path)
         l1 = Label(self.tk_object, image=header_base_img, bg='#b8e6fe')
         l1.grid(row=0, columnspan=4)
 

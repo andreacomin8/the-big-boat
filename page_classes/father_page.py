@@ -1,7 +1,8 @@
 from tkinter import *
+import tkinter.ttk as ttk
 
 class GuiPage:
-    def __init__(self, tk_object, width, height, title, background, side=None, resizable=None):
+    def __init__(self, tk_object, width, height, title, background=None, side=None, resizable=None):
 
         """
             Parameters
@@ -38,6 +39,7 @@ class GuiPage:
 
     def show_page(self):
         # setup page size, shape and background
+
         self.tk_object.geometry(self.geometry)
         if self.resizable:
             self.tk_object.resizable(self.resizable)
