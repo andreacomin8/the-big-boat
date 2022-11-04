@@ -1,7 +1,8 @@
 from tkinter import *
-from page_classes import landing_page, choose_modality, setup_modality,quiz_page
+from page_classes import landing_page, choose_modality, setup_modality, quiz_page
 from quiz_page import base_questions
 from quiz_generator import QuizGenerator
+
 
 
 
@@ -20,6 +21,7 @@ def launch_choose_modality_page_base():
     a.back_button(lambda: pages_transition(tk_object, "landing_page"))
     a.show_page()
 
+
 def launch_choose_modality_page_vela():
     tk_object = Tk()
     # retrieve_page_content()
@@ -28,7 +30,8 @@ def launch_choose_modality_page_vela():
     a.back_button(lambda: pages_transition(tk_object, "landing_page"))
     a.show_page()
 
-#todo logica back button, dovrebbe salvare precedente
+
+# todo logica back button, dovrebbe salvare precedente
 def launch_topic_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
@@ -68,7 +71,7 @@ def launch_quiz_exam_base():
 def launch_quiz_topic_base():
     tk_object = Tk()
     # retrieve_page_content()
-    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(base_questions, topic_selected="COLREG E SEGNALAMENTO MARITTIMO", q_number=2 ).topic(), header_path=headers_path['topic'])
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(base_questions, topic_selected = topicc , q_number= num_dom  ).topic(), header_path=headers_path['topic'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
     a.show_page()
 
@@ -76,12 +79,24 @@ def launch_quiz_topic_base():
 def launch_quiz_search_base():
     tk_object = Tk()
     # retrieve_page_content()
-    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['search'], QuizGenerator(base_questions, word_searched='figur').search(), header_path=headers_path['search'])
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['search'], QuizGenerator(base_questions, word_searched = zingarus).search() , header_path=headers_path['search'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
     a.show_page()
 
 
-def pages_transition(page_2_destroy, to_create):
+def pages_transition(page_2_destroy, to_create, entry_base=None, numero_domande=None, argomento_selezionato=None):
+    global zingarus
+    if entry_base:
+        zingarus = entry_base
+
+    global num_dom
+    if numero_domande:
+        num_dom = numero_domande
+
+    global topicc
+    if argomento_selezionato:
+        topicc = argomento_selezionato
+
     map_pages = {
         "landing_page": launch_landing_page,
         # "setup_quiz_base": launch_setup_quiz_base_page,

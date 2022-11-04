@@ -45,16 +45,18 @@ class SetupModalityPage(GuiPage):
                        length=300, bg=self.background)
         slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
                              bg=self.background)
+
+
 # todo sistemare il launcher
         def topic_command():
-            page_launcher.pages_transition(self.tk_object, "quiz_topic_base")
+            page_launcher.pages_transition(self.tk_object, "quiz_topic_base", numero_domande=numero_domande.get(), argomento_selezionato=argomento_selezionato.get())
 
         global img_topic_button
         img_topic_button = PhotoImage(file='Images/personalizzata_button.png')
         b1_c1 = Button(canvas_1, command=topic_command, relief=RAISED, image=img_topic_button, height=img_topic_button.height(), width=img_topic_button.width())
 
         # place widgets
-        canvas_1.grid_columnconfigure((0,1), weight=2)
+        canvas_1.grid_columnconfigure((0, 1), weight=2)
         l1_c1.grid(row=0, column=0, pady=20, sticky='e')
         l2_c1.grid(row=1, column=0, pady=10, sticky='e')
         combobox.grid(row=0, column=1, pady=20)
@@ -86,7 +88,8 @@ class SetupModalityPage(GuiPage):
 
         global ricerca_button_img
         ricerca_button_img = PhotoImage(file='Images/ricerca_button.png')
-        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_base")), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_base", entry_base=entry_base.get())), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+
 
         # Canvas_2 place widgets
         label_cerca_base.pack(pady=10)
