@@ -1,5 +1,5 @@
 {
-    "Numero":{
+    "numero":{
         "0":1,
         "1":2,
         "2":3,
@@ -251,7 +251,7 @@
         "248":249,
         "249":250
     },
-    "Domanda":{
+    "domande":{
         "0":"Lo scafo di un'unit\u00e0 navale a vela \u00e8 la parte immersa della deriva.",
         "1":"Lo scafo di un'unit\u00e0 a vela \u00e8 la struttura galleggiante e portante della stessa.",
         "2":"La presenza del bulbo zavorrato in un'unit\u00e0 navale a vela ha la funzione di fornire alla stessa  una maggiore stabilit\u00e0 per contrastare le azioni esterne (vento).",
@@ -503,7 +503,7 @@
         "248":"Salvo le ordinanze locali, di norma \u00e8 possibile entrare in un porto navigando a vela.",
         "249":"Lascare la randa agevola la poggiata."
     },
-    "V_F":{
+    "risposta_corretta":{
         "0":"F",
         "1":"V",
         "2":"V",
@@ -755,7 +755,7 @@
         "248":"F",
         "249":"V"
     },
-    "Argomento":{
+    "tema":{
         "0":"TEORIA DELLA VELA",
         "1":"TEORIA DELLA VELA",
         "2":"TEORIA DELLA VELA",
@@ -1007,7 +1007,7 @@
         "248":"MANOVRE DELLE UNITA' A \nVELA",
         "249":"MANOVRE DELLE UNITA' A \nVELA"
     },
-    "Immagini":{
+    "immagine":{
         "0":0,
         "1":0,
         "2":0,

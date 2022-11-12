@@ -1,9 +1,7 @@
 from tkinter import *
 from page_classes import landing_page, choose_modality, setup_modality, quiz_page
-from quiz_page import base_questions
+from quiz_page import base_questions, sail_questions
 from quiz_generator import QuizGenerator
-
-
 
 
 def launch_landing_page():
@@ -36,7 +34,7 @@ def launch_topic_modality_page():
     tk_object = Tk()
     # retrieve_page_content()
     a = setup_modality.SetupModalityPage(tk_object, 920, 380, "Modalità Seleziona Argomento", color_modality['topic'], header_path=headers_path['topic'])
-    a.topic_modality()
+    a.topic_modality_base()
     a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
     a.show_page()
 
@@ -71,7 +69,15 @@ def launch_quiz_exam_base():
 def launch_quiz_topic_base():
     tk_object = Tk()
     # retrieve_page_content()
-    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(base_questions, topic_selected = topicc , q_number= num_dom  ).topic(), header_path=headers_path['topic'])
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(base_questions, topic_selected =topicc, q_number=num_dom).topic(), header_path=headers_path['topic'])
+    a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
+    a.show_page()
+
+
+def launch_quiz_topic_vela():
+    tk_object = Tk()
+    # retrieve_page_content()
+    a = quiz_page.QuizPage(tk_object, 920, 800, "Quiz!", color_modality['topic'], QuizGenerator(sail_questions, topic_selected =topicc, q_number=num_dom).topic_vela(), header_path=headers_path['topic'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
     a.show_page()
 
@@ -99,7 +105,6 @@ def pages_transition(page_2_destroy, to_create, entry_base=None, numero_domande=
 
     map_pages = {
         "landing_page": launch_landing_page,
-        # "setup_quiz_base": launch_setup_quiz_base_page,
         "choose_modality_base": launch_choose_modality_page_base,
         "choose_modality_vela": launch_choose_modality_page_vela,
         "setup_topic_modality": launch_topic_modality_page,
@@ -108,12 +113,14 @@ def pages_transition(page_2_destroy, to_create, entry_base=None, numero_domande=
         "quiz_esame_base": launch_quiz_exam_base,
         "quiz_topic_base": launch_quiz_topic_base,
         "quiz_search_base": launch_quiz_search_base,
-        "setup_quiz_vela": 2,
+        "quiz_topic_vela": launch_quiz_topic_vela,
         "quiz": 2,
         "results": 2
     }
     page_2_destroy.destroy()
     map_pages[to_create]()
+
+
 
 
 headers_path = {

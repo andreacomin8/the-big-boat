@@ -5,8 +5,10 @@ from tkinter import *
 from tkinter import messagebox as mb
 import PIL.Image
 from PIL import ImageOps, ImageTk
+import choose_modality
+import landing_page
+
 # todo Se importo pages_transition, non funziona la funzione WTF?
-# from page_launcher import pages_transition
 
 
 def load_initial_data(base_questions_path, sail_questions_path):
@@ -22,7 +24,6 @@ base_questions, sail_questions = load_initial_data(base_questions_path='page_cla
                                                    sail_questions_path='page_classes/data/vela_data.json')
 
 
-
 class QuizPage(GuiPage):
     def __init__(self, tk_object, width, height, title, background, question_index_list_generated, header_path):
         super().__init__(tk_object, width, height, title, background, question_index_list_generated)
@@ -30,7 +31,7 @@ class QuizPage(GuiPage):
         # self.data = data
         self.question_index_list_generated = question_index_list_generated
         self.q_no = 1
-        self.quiz_answer = {}  # dict nel quale si salvano le domande {index_domanda : risposta,...}
+        self.quiz_answer = {}  # dict nel quale si salvano le risposte {index_domanda : risposta,...}
         self.i = 0
         self.q_selected_index = self.question_index_list_generated[self.i]
         self.option_selected = IntVar()
@@ -201,7 +202,6 @@ class QuizPage(GuiPage):
         else:
             return None
 
-
     def show_results(self):
 
         #count
@@ -227,60 +227,125 @@ class QuizPage(GuiPage):
         canvas_buttons.destroy()
         canvas_footer.destroy()
 
-        results_page = GuiPage(self.tk_object, 920, 600, 'Risultati', self.background)
-        Label(self.tk_object, text='Risultati', font=('ariel', 18, 'bold'), bg=self.background).pack()
+        results_page = GuiPage(self.tk_object, 920, 800, 'Risultati', self.background)
+
+        # Create scrollbar - necessario creare un frame, dentro il quale posizionare i canvas
+
+        # Main Frame
+        main_frame = Frame(self.tk_object, bg=self.background)
+        main_frame.pack(fill=BOTH, expand=1)
+
+        # Create Canvas
+        my_canvas = Canvas(main_frame, bg=self.background)
+        my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+        # create scrollbar
+        my_scrollbar = Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+
+        # configure canvas
+
+        def on_mousewheel(event):
+            shift = (event.state & 0x1) != 0
+            scroll = -1 if event.delta > 0 else 1
+            my_canvas.yview_scroll(scroll, "units")
+
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
+        my_canvas.bind_all("<MouseWheel>", on_mousewheel)
+
+        # second Frame
+        second_frame = Frame(my_canvas, bg=self.background)
+
+        # add new frame to a Window in the canvas
+        my_canvas.create_window((0, 0), window=second_frame, anchor='nw')
+
+
+        Label(second_frame, text='Risultati', font=('ariel', 18, 'bold'), bg=self.background).pack()
         # k = indice domanda
         # v = risposta data 1,2 o 3
+
+        question_number = 1
         for k, v in self.quiz_answer.items():
-            print(k, v)
 
             # show domanda
-            Label(self.tk_object,
-                  text=f'\n{base_questions["domande"][k]}',
+            results_wraplength = 850
+
+            if v == base_questions['risposta_corretta'][k]:
+                bg = self.background
+            else:
+                bg = '#ffc2c3'
+
+            Label(second_frame,
+                  text=f'\n{question_number} - {base_questions["domande"][k]}',
                   font=('ariel', 15, 'bold'),
-                  bg=self.background,
-                  wraplength=800,
+                  bg=bg,
+                  wraplength=750,
                   justify=LEFT,
-                  anchor='w').pack(fill='x', padx=30)
+                  anchor='w').pack(fill='x',padx=10)
+
+            question_number += 1
 
             if v == 0:
                 text_answer = 'Nessuna Risposta'
             else:
+
                 text_answer = base_questions["opzioni_risposta"][k][v-1]
 
-            if (v-1) == base_questions['risposta_corretta'][k]:
+
+            if v == base_questions['risposta_corretta'][k]:
                 # show risposta data in verde
-                Label(self.tk_object,
-                      text=text_answer,
+                Label(second_frame,
+                      text='risposta corretta: ' + text_answer,
                       font=('ariel', 15, ),
                       bg=self.background,
                       fg='green',
-                      wraplength=800,
+                      wraplength=results_wraplength,
                       justify=LEFT,
-                      anchor='w').pack(fill='x', padx=30)
+                      anchor='w').pack(fill='x', padx=10)
             else:
                 # show risposta data in rosso
-                Label(self.tk_object,
-                      text=text_answer,
-                      font=('ariel', 15, ),
+                Label(second_frame,
+                      text='risposta errata: ' + text_answer,
+                      font=('ariel', 15),
                       bg=self.background,
                       fg='red',
-                      wraplength=800,
+                      wraplength=results_wraplength,
                       justify=LEFT,
-                      anchor='w').pack(fill='x', padx=30)
+                      anchor='w').pack(fill='x', padx=10)
 
                 # show risposta corretta
-                Label(self.tk_object,
-                      text=base_questions["opzioni_risposta"][k][base_questions["risposta_corretta"][k]-1],
+                Label(second_frame,
+                      text=f'risposta corretta: {base_questions["opzioni_risposta"][k][base_questions["risposta_corretta"][k]-1]}',
                       fg='green',
                       bg=self.background,
                       font=('ariel', 15),
-                      wraplength=800,
+                      wraplength=results_wraplength,
                       justify=LEFT,
-                      anchor='w').pack(fill='x', padx=30)
+                      anchor='w').pack(fill='x', padx=10)
 
-        results_page.back_button(lambda: pages_transition(self.tk_object, "choose_modality_base"))
+#todo sistemare problema con funzione back, solito problema di importazione circolare
+        # sono schifato dal codice qui sotto, però funziona
+
+        def back_result_command():
+            self.tk_object.destroy()
+            tk_object = Tk()
+            a = choose_modality.ChooseModalityPage(tk_object, 920, 720, "Scegli la modalità", "#b8e6fe", header_path='Images/header_base.png')
+
+            def launch_landing_page(tk_object):
+                tk_object.destroy()
+                tk_object = Tk()
+                # retrieve_page_content()
+                a = landing_page.LandingPage(tk_object, 620, 500, "Quiz Patente Nautica - Menu Iniziale", "#b8e6fe")
+                a.show_page()
+
+            a.back_button(lambda: launch_landing_page(tk_object))
+            a.show_page()
+
+        results_page.back_button(lambda: back_result_command())
         results_page.show_page()
+
+
 
 
 
