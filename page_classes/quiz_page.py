@@ -18,17 +18,35 @@ def load_initial_data(base_questions_path, sail_questions_path):
     with open(sail_questions_path) as f:
         sail_df = json.load(f)
     return base_df, sail_df
-
-
+#sail_question: 1-Vero 2-Falso
 base_questions, sail_questions = load_initial_data(base_questions_path='page_classes/data/base_data.json',
                                                    sail_questions_path='page_classes/data/vela_data.json')
 
 
+def save_wrong_question(modality, wrong_q_index):
+    col_name = 'domande_salvate_' + str(modality)
+
+    with open('saved.json', 'r') as file:
+        data = json.load(file)
+
+    if wrong_q_index not in data[col_name]:
+        data[col_name].append(wrong_q_index)
+
+    with open('saved.json', 'w') as file:
+        json.dump(data, file, indent=2)
+
+
 class QuizPage(GuiPage):
-    def __init__(self, tk_object, width, height, title, background, question_index_list_generated, header_path):
+    def __init__(self, tk_object, data, width, height, title, background, question_index_list_generated, header_path):
         super().__init__(tk_object, width, height, title, background, question_index_list_generated)
         self.background = background
-        # self.data = data
+        self.data = data
+
+        if self.data == base_questions:
+            self.mod = 'base'
+        else:
+            self.mod = 'vela'
+
         self.question_index_list_generated = question_index_list_generated
         self.q_no = 1
         self.quiz_answer = {}  # dict nel quale si salvano le risposte {index_domanda : risposta,...}
@@ -133,17 +151,17 @@ class QuizPage(GuiPage):
         self.display_image()
 
     def display_info(self):
-        text = f'Domanda N. {self.q_no} di {len(self.question_index_list_generated)} - {base_questions["tema"][self.q_selected_index]}'
+        text = f'Domanda N. {self.q_no} di {len(self.question_index_list_generated)} - {self.data["tema"][self.q_selected_index]}'
         Label(canvas_info, text=text, fg='red', font=("ariel", 15), bg=self.background).pack()
 
     def display_q(self):
-        text = base_questions['domande'][self.q_selected_index]
+        text = self.data['domande'][self.q_selected_index]
         Label(canvas_question, text=text, font=('ariel', 18, 'bold'), wraplength=870,
               justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
 
     def display_options(self):
         val = 1
-        for option in base_questions['opzioni_risposta'][self.q_selected_index]:
+        for option in self.data['opzioni_risposta'][self.q_selected_index]:
             Radiobutton(canvas_options, text=option, variable=self.option_selected, value=val, font=("ariel", 15),
                         wraplength=850, justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
             val += 1
@@ -151,8 +169,8 @@ class QuizPage(GuiPage):
     def display_image(self):
         global q_img
 
-        if base_questions['immagine'][self.q_selected_index] != 0:
-            image = PIL.Image.open('Immagini Pieghevole/Im' + str(base_questions['immagine'][self.q_selected_index]) + '.jpg')
+        if self.data['immagine'][self.q_selected_index] != 0:
+            image = PIL.Image.open('Immagini Pieghevole/Im' + str(self.data['immagine'][self.q_selected_index]) + '.jpg')
             # resize immagini, in base al loro lato maggiore (larghezza o altezza)
             width = image.size[0]
             height = image.size[1]
@@ -201,17 +219,17 @@ class QuizPage(GuiPage):
 
         else:
             return None
-
+    #todo far vedere figura nei risultati
     def show_results(self):
-
         #count
         wrong = 0
         correct = 0
         for k, v in self.quiz_answer.items():
-            if v == base_questions['risposta_corretta'][k]:
+            if v == self.data['risposta_corretta'][k]:
                 correct += 1
             else:
                 wrong += 1
+                save_wrong_question(self.mod, k)
 
         score = int(correct / (correct + wrong) * 100)
 
@@ -271,13 +289,13 @@ class QuizPage(GuiPage):
             # show domanda
             results_wraplength = 850
 
-            if v == base_questions['risposta_corretta'][k]:
+            if v == self.data['risposta_corretta'][k]:
                 bg = self.background
             else:
                 bg = '#ffc2c3'
 
             Label(second_frame,
-                  text=f'\n{question_number} - {base_questions["domande"][k]}',
+                  text=f'\n{question_number} - {self.data["domande"][k]}',
                   font=('ariel', 15, 'bold'),
                   bg=bg,
                   wraplength=750,
@@ -290,10 +308,10 @@ class QuizPage(GuiPage):
                 text_answer = 'Nessuna Risposta'
             else:
 
-                text_answer = base_questions["opzioni_risposta"][k][v-1]
+                text_answer = self.data["opzioni_risposta"][k][v-1]
 
 
-            if v == base_questions['risposta_corretta'][k]:
+            if v == self.data['risposta_corretta'][k]:
                 # show risposta data in verde
                 Label(second_frame,
                       text='risposta corretta: ' + text_answer,
@@ -316,7 +334,7 @@ class QuizPage(GuiPage):
 
                 # show risposta corretta
                 Label(second_frame,
-                      text=f'risposta corretta: {base_questions["opzioni_risposta"][k][base_questions["risposta_corretta"][k]-1]}',
+                      text=f'risposta corretta: {self.data["opzioni_risposta"][k][self.data["risposta_corretta"][k]-1]}',
                       fg='green',
                       bg=self.background,
                       font=('ariel', 15),
@@ -328,9 +346,11 @@ class QuizPage(GuiPage):
         # sono schifato dal codice qui sotto, però funziona
 
         def back_result_command():
-            self.tk_object.destroy()
+            if self.tk_object:
+                self.tk_object.destroy()
             tk_object = Tk()
-            a = choose_modality.ChooseModalityPage(tk_object, 920, 720, "Scegli la modalità", "#b8e6fe", header_path='Images/header_base.png')
+            #todo tornare a pagina vela
+            a = choose_modality.ChooseModalityPageBase(tk_object, 920, 720, "Scegli la modalità", "#b8e6fe", header_path='Images/header_base.png')
 
             def launch_landing_page(tk_object):
                 tk_object.destroy()

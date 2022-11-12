@@ -2,7 +2,7 @@ from father_page import GuiPage
 from tkinter import *
 import page_launcher
 
-
+#todo impedire resizeble
 class LandingPage(GuiPage):
     def __init__(self, tk_object, width, height, title, background):
         super().__init__(tk_object, width, height, title, background)

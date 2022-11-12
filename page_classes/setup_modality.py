@@ -1,6 +1,7 @@
 from father_page import GuiPage
 from tkinter.ttk import *
 from tkinter import *
+import json
 import page_launcher
 
 
@@ -64,7 +65,7 @@ class SetupModalityPage(GuiPage):
         slider_label.grid(row=3, column=1, pady=5)
         b1_c1.grid(row=5, columnspan=2, pady=10)
 
-    def search_modality(self):
+    def search_modality_base(self):
         global entry_base
         label_cerca_base = Label(canvas_1,
                                  text='Ricerca Domande per parole chiave:',
@@ -88,7 +89,7 @@ class SetupModalityPage(GuiPage):
 
         global ricerca_button_img
         ricerca_button_img = PhotoImage(file='Images/ricerca_button.png')
-        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_base", entry_base=entry_base.get())), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_base", entry_word=entry_base.get())), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
 
 
         # Canvas_2 place widgets
@@ -96,19 +97,28 @@ class SetupModalityPage(GuiPage):
         entry_base.pack(pady=10)
         ricerca_button.pack(pady=10)
 
-    def error_modality(self):
-        # todo il numero di domande massimo deve corrisponde al numero di domande totali sbaglaite
+    def error_modality_base(self):
+        col_name = 'domande_salvate_base'
+        with open('saved.json', 'r') as file:
+                data = json.load(file)
+        n_max = len(data[col_name])
+
         l1_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg=self.background)
         global numero_domande
         numero_domande = IntVar()
-        slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
+        slider = Scale(canvas_1, from_=1, to=n_max, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
                        length=300, bg=self.background)
-        slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
+        slider_label = Label(canvas_1, text=' -- da 1 domanda a '+ str(n_max) + ' domande --', font=("ariel", 10, " italic"),
                              bg=self.background)
 
         global sbagliati_button_img
         sbagliati_button_img = PhotoImage(file='Images/sbagliati_button.png')
-        sbagliati_button = Button(canvas_1, image=sbagliati_button_img, relief=RAISED, height=sbagliati_button_img.height(), width=sbagliati_button_img.width())
+        sbagliati_button = Button(canvas_1,
+                                  command=lambda: page_launcher.pages_transition(self.tk_object, "quiz_error_base", numero_domande=numero_domande.get()),
+                                  image=sbagliati_button_img,
+                                  relief=RAISED,
+                                  height=sbagliati_button_img.height(),
+                                  width=sbagliati_button_img.width())
 
         l1_c1.pack(pady=10)
         slider.pack(pady=10)
@@ -120,28 +130,31 @@ class SetupModalityPage(GuiPage):
         l1_c1 = Label(canvas_1, text='Seleziona Argomento: ', font=('ariel', 16, 'bold'), bg=self.background)
         l2_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg=self.background)
 
-        global argomento_selezionato_vela
-        argomento_selezionato_vela = StringVar()
-        combobox = Combobox(canvas_1, textvariable=argomento_selezionato_vela, width=35)
-        combobox['values'] = ["TUTTI", "TEORIA DELLA VELA", "ATTREZZATURA DELLE UNITA' \nA VELA", "MANOVRE DELLE UNITA' A \nVELA"]
+        global argomento_selezionato
+        argomento_selezionato = StringVar()
+        combobox = Combobox(canvas_1, textvariable=argomento_selezionato, width=35)
+        combobox['values'] = ['TUTTI', "TEORIA DELLA VELA", "ATTREZZATURA DELLE UNITA' A VELA", "MANOVRE DELLE UNITA' A VELA"]
 
         # impedisce di scrivere nel menu a tendina
         combobox['state'] = 'readonly'
         # default "tutti"
         combobox.set("TUTTI")
-        combobox.bind('<<ComboboxSelected>>', argomento_selezionato_vela.get())
+        combobox.bind('<<ComboboxSelected>>', argomento_selezionato.get())
 
         global numero_domande
         numero_domande = IntVar()
-        slider = Scale(canvas_1, from_=1, to=100, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
+        slider = Scale(canvas_1, from_=1, to=50, orient='horizontal', variable=numero_domande, cursor='boat', width=30,
                        length=300, bg=self.background)
-        slider_label = Label(canvas_1, text=' -- da 1 domanda a 100 domande --', font=("ariel", 10, " italic"),
+        slider_label = Label(canvas_1, text=' -- da 1 domanda a 50 domande --', font=("ariel", 10, " italic"),
                              bg=self.background)
 
 
 # todo sistemare il launcher
         def topic_command_vela():
-            page_launcher.pages_transition(self.tk_object, "quiz_topic_vela", numero_domande=numero_domande.get(), argomento_selezionato=argomento_selezionato.get())
+            page_launcher.pages_transition(self.tk_object,
+                                           "quiz_topic_vela",
+                                           numero_domande=numero_domande.get(),
+                                           argomento_selezionato=argomento_selezionato.get())
 
         global img_topic_button
         img_topic_button = PhotoImage(file='Images/personalizzata_button.png')
@@ -155,3 +168,66 @@ class SetupModalityPage(GuiPage):
         slider.grid(row=1, column=1)
         slider_label.grid(row=3, column=1, pady=5)
         b1_c1.grid(row=5, columnspan=2, pady=10)
+
+    def search_modality_vela(self):
+        global entry_base
+        label_cerca_base = Label(canvas_1,
+                                 text='Ricerca Domande per parole chiave:',
+                                 font=('ariel', 16, 'bold'), bg=self.background)
+
+        def on_enter(e):
+            entry_base.delete(0, 'end')
+
+        def on_leave(e):
+            name = entry_base.get()
+            if name == '':
+                entry_base.insert(0)
+
+
+        entry_base = Entry(canvas_1, font=("ariel", 12, " italic"), width=50)
+
+        entry_base.insert(0, 'es. "randa", "tangone", ecc..')
+        entry_base.bind('<FocusIn>', on_enter)
+        entry_base.bind('<FocusOut>', on_leave)
+
+
+        global ricerca_button_img
+        ricerca_button_img = PhotoImage(file='Images/ricerca_button.png')
+        ricerca_button = Button(canvas_1, command=(lambda: page_launcher.pages_transition(self.tk_object, "quiz_search_vela", entry_word=entry_base.get())), image=ricerca_button_img, relief=RAISED, height=ricerca_button_img.height(), width=ricerca_button_img.width())
+
+
+        # Canvas_2 place widgets
+        label_cerca_base.pack(pady=10)
+        entry_base.pack(pady=10)
+        ricerca_button.pack(pady=10)
+
+    def error_modality_vela(self):
+        col_name = 'domande_salvate_vela'
+        with open('saved.json', 'r') as file:
+            data = json.load(file)
+        n_max = len(data[col_name])
+
+        l1_c1 = Label(canvas_1, text='Numero Domande : ', font=('ariel', 16, 'bold'), bg=self.background)
+        global numero_domande
+        numero_domande = IntVar()
+        slider = Scale(canvas_1, from_=1, to=n_max, orient='horizontal', variable=numero_domande, cursor='boat',
+                       width=30,
+                       length=300, bg=self.background)
+        slider_label = Label(canvas_1, text=' -- da 1 domanda a ' + str(n_max) + ' domande --',
+                             font=("ariel", 10, " italic"),
+                             bg=self.background)
+
+        global sbagliati_button_img
+        sbagliati_button_img = PhotoImage(file='Images/sbagliati_button.png')
+        sbagliati_button = Button(canvas_1,
+                                  command=lambda: page_launcher.pages_transition(self.tk_object, "quiz_error_vela",
+                                                                                 numero_domande=numero_domande.get()),
+                                  image=sbagliati_button_img,
+                                  relief=RAISED,
+                                  height=sbagliati_button_img.height(),
+                                  width=sbagliati_button_img.width())
+
+        l1_c1.pack(pady=10)
+        slider.pack(pady=10)
+        slider_label.pack(pady=5)
+        sbagliati_button.pack(pady=10)

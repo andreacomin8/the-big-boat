@@ -16,7 +16,7 @@ class QuizGenerator:
         else:
             list_q_selected_topic = [k for k, v in self.topics.items() if self.topics[str(k)] == self.topic_selected]
 
-        q_list = random.sample(list_q_selected_topic, k= self.q_number)
+        q_list = random.sample(list_q_selected_topic, k=self.q_number)
 
         return q_list
 
@@ -26,8 +26,7 @@ class QuizGenerator:
         q_list = list_q_selected_search
         return q_list
 
-    def exam(self):
-        #
+    def exam_base(self):
         q_list=[]
         scheda_esame = {'TEORIA DELLO SCAFO': 1, 'MOTORI': 1, 'SICUREZZA DELLA NAVIGAZIONE': 3,
                         'MANOVRA E CONDOTTA': 4, 'COLREG E SEGNALAMENTO MARITTIMO': 2, 'METEOROLOGIA': 2,
@@ -41,7 +40,21 @@ class QuizGenerator:
         return q_list
 
     def error(self):
-        # open file saved.json
-        pass
+        q_list = random.sample(self.questions.keys(), k=self.q_number)
+        return q_list
 
+    def topic_vela(self):
+
+        if self.topic_selected == 'TUTTI':
+            list_q_selected_topic = list(self.topics.keys())
+        else:
+            list_q_selected_topic = [k for k, v in self.topics.items() if self.topics[str(k)] == self.topic_selected]
+
+        q_list = random.sample(list_q_selected_topic, k=self.q_number)
+
+        return q_list
+
+    def exam_vela(self):
+        q_list = random.sample(self.questions.keys(), k=5)
+        return q_list
 
