@@ -1,6 +1,7 @@
 from father_page import GuiPage
 from tkinter.ttk import *
 from tkinter import *
+from tkinter import messagebox as mb
 import json
 import page_launcher
 
@@ -120,10 +121,29 @@ class SetupModalityPage(GuiPage):
                                   height=sbagliati_button_img.height(),
                                   width=sbagliati_button_img.width())
 
+        def cancella_memoria():
+            warning = mb.askyesno("Attenzione",
+                                  "Attenzione!\nTutti i dati salvati andranno persi.\nSei sicuro di voler continuare?")
+            if warning == True:
+                with open('saved.json', 'r') as f:
+                    data = json.load(f)
+                data['domande_salvate_base'] = list()
+                print(data)
+                with open('saved.json', 'w') as f:
+                    json.dump(data, f,indent=2)
+
+                mb.showinfo('formattazione', 'Tutti i dati sono stati cancellati!')
+
+        global img_cestino
+
+        img_cestino = PhotoImage(file='Images/cestino.png')
+        cancella_memoria_button = Button(canvas_1, image=img_cestino, command=cancella_memoria)
+
         l1_c1.pack(pady=10)
         slider.pack(pady=10)
         slider_label.pack(pady=5)
         sbagliati_button.pack(pady=10)
+        cancella_memoria_button.place(relx=0.65,rely=0.75)
 
     def topic_modality_vela(self):
 
@@ -227,7 +247,26 @@ class SetupModalityPage(GuiPage):
                                   height=sbagliati_button_img.height(),
                                   width=sbagliati_button_img.width())
 
+        def cancella_memoria():
+            warning = mb.askyesno("Attenzione",
+                                  "Attenzione!\nTutti i dati salvati andranno persi.\nSei sicuro di voler continuare?")
+            if warning == True:
+                with open('saved.json', 'r') as f:
+                    data = json.load(f)
+                data['domande_salvate_vela'] = list()
+                print(data)
+                with open('saved.json', 'w') as f:
+                    json.dump(data, f, indent=2)
+
+                mb.showinfo('formattazione', 'Tutti i dati sono stati cancellati!')
+
+        global img_cestino
+
+        img_cestino = PhotoImage(file='Images/cestino.png')
+        cancella_memoria_button = Button(canvas_1, image=img_cestino, command=cancella_memoria)
+
         l1_c1.pack(pady=10)
         slider.pack(pady=10)
         slider_label.pack(pady=5)
         sbagliati_button.pack(pady=10)
+        cancella_memoria_button.place(relx=0.65,rely=0.75)

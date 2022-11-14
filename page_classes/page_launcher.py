@@ -129,7 +129,7 @@ def launch_quiz_search_base():
         a.show_page()
     else:
         mb.showwarning("Attnezione", "La parola cercata non è stata trovata.\nEffettua una nuova ricerca!")
-        pages_transition(tk_object, "setup_search_modality_vela")
+        pages_transition(tk_object, "setup_search_modality")
 
 
 def launch_quiz_error_base():

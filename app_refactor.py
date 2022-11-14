@@ -1,15 +1,7 @@
 # Dicitura per Pyinstaller:
-# os.chdir(sys._MEIPASS)
-# import sys, os
+#import sys, os
+#os.chdir(sys._MEIPASS)
 
-import pandas as pd
-import json
-from tkinter.ttk import *
-from tkinter import *
-import PIL.Image
-from PIL import ImageTk, ImageOps
-from random import choice
-from tkinter import messagebox as mb
 
 # todo: import classes from outer files
 from page_classes import page_launcher

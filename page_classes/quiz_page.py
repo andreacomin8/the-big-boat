@@ -105,6 +105,10 @@ class QuizPage(GuiPage):
             else:
                 self.option_selected.set(0)
 
+        if self.data['immagine'][self.q_selected_index] != 0:
+            Label(canvas_buttons, text="clicca sulla figura per ingrandirla", bg=self.background,
+                  font=('ariel', 13)).pack(pady=10)
+
         global confirm_button_img
         confirm_button_img = PhotoImage(file='Images/conferma_button.png')
         Button(canvas_buttons, text='next', command=confirm_command, image=confirm_button_img, height=49).pack()
@@ -219,8 +223,9 @@ class QuizPage(GuiPage):
 
         else:
             return None
-    #todo far vedere figura nei risultati
+
     def show_results(self):
+    # todo far vedere figura nei risultati
         #count
         wrong = 0
         correct = 0
@@ -284,8 +289,9 @@ class QuizPage(GuiPage):
         # v = risposta data 1,2 o 3
 
         question_number = 1
+        #dizionario per tenere in memoria le immagine da stampare nei risultati
+        dict_images = {}
         for k, v in self.quiz_answer.items():
-
             # show domanda
             results_wraplength = 850
 
@@ -301,8 +307,27 @@ class QuizPage(GuiPage):
                   wraplength=750,
                   justify=LEFT,
                   anchor='w').pack(fill='x',padx=10)
-
             question_number += 1
+
+            # todo aggiungere tasto per vedere immagine
+            if self.data['immagine'][k] != 0:
+                image = PIL.Image.open('Immagini Pieghevole/Im' + str(self.data['immagine'][k]) + '.jpg')
+                # regolazione dimensione
+                width = image.size[0]
+                height = image.size[1]
+                max_size = 200
+                if width > height:
+                    img_proportion = height / width
+                    width_resized = max_size
+                    height_resized = int(max_size * img_proportion)
+                else:
+                     img_proportion = width / height
+                     width_resized = int(max_size * img_proportion)
+                     height_resized = max_size
+
+                image_resized = ImageOps.contain(image, (width_resized, height_resized))
+                dict_images[k] = ImageTk.PhotoImage(image_resized)
+                Label(second_frame, image=dict_images[k]).pack(padx=20,pady=5,anchor='w')
 
             if v == 0:
                 text_answer = 'Nessuna Risposta'
