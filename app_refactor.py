@@ -1,12 +1,10 @@
 # Dicitura per Pyinstaller:
-#import sys, os
+import os, sys
 #os.chdir(sys._MEIPASS)
 
 
 # todo: import classes from outer files
-from page_classes import page_launcher
-# from page_classes.father_page import GuiPage
-# from page_classes.landing_page import LandingPage
+import page_launcher
 
 
 def start_application():
