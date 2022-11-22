@@ -1,5 +1,4 @@
 from tkinter import *
-import ctypes
 
 """ORIGINAL_DPI = 72   # This is the DPI of the computer you're making/testing the script on.
 

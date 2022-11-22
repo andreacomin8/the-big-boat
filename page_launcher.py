@@ -7,7 +7,7 @@ from quiz_page import base_questions, sail_questions
 from quiz_generator import QuizGenerator
 from tkinter import messagebox as mb
 import json, random
-
+# 1024×768
 # windows size
 landing_page_width = 620
 landing_page_height = 500
@@ -15,13 +15,13 @@ choose_modality_width = 920
 choose_modality_height = 720
 setup_modality_width = 920
 setup_modality_height = 380
-quiz_width = 920
-quiz_height = 790
+quiz_width = 1024
+quiz_height = 720
 
 
 def launch_landing_page():
     tk_object = Tk()
-    tk_object.resizable(False, False)
+    tk_object.resizable(True, True)
     # retrieve_page_content()
     a = landing_page.LandingPage(tk_object, landing_page_width, landing_page_height, "Quiz Patente Nautica - Menu Iniziale", "#b8e6fe")
     a.show_page()
@@ -29,7 +29,7 @@ def launch_landing_page():
 
 def launch_choose_modality_page_base():
     tk_object = Tk()
-    tk_object.resizable(False, False)
+    tk_object.resizable(True,True)
     # retrieve_page_content()
     a = choose_modality.ChooseModalityPageBase(tk_object, choose_modality_width, choose_modality_height, "Scegli la modalità", "#b8e6fe",
                                                header_path=headers_path["base"])

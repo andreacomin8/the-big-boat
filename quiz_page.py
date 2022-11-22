@@ -105,9 +105,9 @@ class QuizPage(GuiPage):
             else:
                 self.option_selected.set(0)
 
-        if self.data['immagine'][self.q_selected_index] != 0:
-            Label(canvas_buttons, text="clicca sulla figura per ingrandirla", bg=self.background,
-                  font=('ariel', 13)).pack(pady=10)
+       #  if self.data['immagine'][self.q_selected_index] != 0:
+       #     Label(canvas_buttons, text="clicca sulla figura per ingrandirla", bg=self.background,
+       #           font=('ariel', 13)).pack(pady=10)
 
         global confirm_button_img
         confirm_button_img = PhotoImage(file='Images/conferma_button.png')
@@ -160,14 +160,14 @@ class QuizPage(GuiPage):
 
     def display_q(self):
         text = self.data['domande'][self.q_selected_index]
-        Label(canvas_question, text=text, font=('ariel', 18, 'bold'), wraplength=870,
+        Label(canvas_question, text=text, font=('ariel', 18, 'bold'), wraplength=920,
               justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
 
     def display_options(self):
         val = 1
         for option in self.data['opzioni_risposta'][self.q_selected_index]:
             Radiobutton(canvas_options, text=option, variable=self.option_selected, value=val, font=("ariel", 15),
-                        wraplength=850, justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
+                        wraplength=920, justify=LEFT, bg=self.background).pack(padx=20, pady=5, anchor='w')
             val += 1
 
     def display_image(self):
@@ -178,15 +178,18 @@ class QuizPage(GuiPage):
             # resize immagini, in base al loro lato maggiore (larghezza o altezza)
             width = image.size[0]
             height = image.size[1]
-            max_size = 230
-            if width > height:
+            max_height = 150
+            width_resized = (width * max_height) / max_height
+            height_resized = max_height
+
+            """if width > height:
                 img_proportion = height / width
                 width_resized = max_size
                 height_resized = int(max_size * img_proportion)
             else:
                 img_proportion = width / height
                 width_resized = int(max_size * img_proportion)
-                height_resized = max_size
+                height_resized = max_size"""
 
             # zoom image in a new window
             def zoom_image(img):
@@ -219,8 +222,9 @@ class QuizPage(GuiPage):
 
             image_resized = ImageOps.contain(image, (width_resized, height_resized))
             q_img = ImageTk.PhotoImage(image_resized)
-            Button(canvas_image, image=q_img, command=(lambda: zoom_image(image)), cursor='fleur').place(relx=0.5, rely=0.5, anchor=CENTER)
-
+            Button(canvas_image, image=q_img, command=(lambda: zoom_image(image)), cursor='fleur').pack(pady=5)
+            Label(canvas_image, text="clicca sulla figura per ingrandirla", bg=self.background, font=('ariel', 13)).pack(pady=2,fill='x')
+            # .place(relx=0.5, rely=0.5, anchor=CENTER)
         else:
             return None
 

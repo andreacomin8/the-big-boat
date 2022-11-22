@@ -20,6 +20,9 @@ class LandingPage(GuiPage):
 
         canvas_buttons = Canvas(self.tk_object, bg='#b8e6fe', bd=2, highlightthickness=0)
         canvas_buttons.pack(padx=25, fill='x')
+        canvas_buttons.columnconfigure(0, weight=1)
+        canvas_buttons.columnconfigure(1, weight=1)
+        canvas_buttons.rowconfigure(0, weight=1)
 
         def button_sx_command():
             page_launcher.pages_transition(self.tk_object, "choose_modality_base")
@@ -27,16 +30,18 @@ class LandingPage(GuiPage):
         global img_base
         img_base = PhotoImage(file='Images/base_1.png')
         button_sx = Button(canvas_buttons, text='Quiz Base', image=img_base, relief=RAISED, command=button_sx_command)
-        button_sx.pack(side=LEFT, padx=20, pady=10)
+        button_sx.grid(row=0, column=0, sticky='e', padx=20, pady=10)
+        # button_sx.pack(side=LEFT, padx=20, pady=10)
 
         def button_dx_command():
             page_launcher.pages_transition(self.tk_object, "choose_modality_vela")
 
         global img_vela
         img_vela = PhotoImage(file='Images/vela_1.png')
-
         button_dx = Button(canvas_buttons, text='Quiz Vela', image=img_vela, relief=RAISED, command=button_dx_command)
-        button_dx.pack(side=LEFT)
+        button_dx.grid(row=0, column=1,sticky='w', padx=20, pady=10)
+
+        #button_dx.pack(side=LEFT)
 
         text_final_label = 'Created by\nLorenzo Tumminello & Andrea Cominotto\nEmail: lorenzotumminello@gmail.com\n\nQuiz ministeriali aggiornati!\nValidi a partire dal 1 Giugno 2022 (DD n.131 del 31/05/2022)'
         Label(text= text_final_label, bg='#b8e6fe', font=("ariel", 10, "italic"), justify=CENTER).pack(fill='x')
