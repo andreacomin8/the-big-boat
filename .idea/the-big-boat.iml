@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Immagini Pieghevole" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/page_classes" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.10 (the-big-boat)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

@@ -1,5 +1,18 @@
 from tkinter import *
 
+"""ORIGINAL_DPI = 72   # This is the DPI of the computer you're making/testing the script on.
+
+def get_dpi():
+    screen = Tk()
+    current_dpi = screen.winfo_fpixels('1i')
+    screen.destroy()
+    return current_dpi
+
+SCALE = get_dpi()/ORIGINAL_DPI    # Now this is the appropriate scale factor you were mentioning.
+
+# Now every time you use a dimension in pixels, replace it with scaled(*pixel dimension*)
+def scaled(original_width):
+    return round(original_width * SCALE)"""
 
 class GuiPage:
     def __init__(self, tk_object, width, height, title, background=None, side=None):
@@ -22,9 +35,8 @@ class GuiPage:
 
         self.tk_object = tk_object
         # params to set page shape and position
-        self.set_scaling_dpi(tk_object)
         left, top = self.calculate_left_top(tk_object, width, height)
-        self.geometry = '%dx%d+%d+%d' % (width, height, left, top)
+        self.geometry = '%dx%d+%d+%d' % (width, height, left, top - 50)
         # self.resizable = resizable
         self.title = title
         self.background = background
@@ -33,18 +45,9 @@ class GuiPage:
 
 
     @staticmethod
-    def set_scaling_dpi(tk):
-        original = 71
-        dpi = tk.winfo_fpixels('1i')
-        scale = round(dpi/original)
-        tk.call('tk', 'scaling', scale)
-
-    @staticmethod
     def calculate_left_top(tk, width, height):
-        left = (tk.winfo_screenwidth() // 2) - (width // 2)
-        top = (tk.winfo_screenheight() // 2) - (height // 2) - 50
-        if top < 0:
-            top = 0
+        left = (tk.winfo_screenwidth() - width) / 2
+        top = (tk.winfo_screenheight() - height) / 2
         return left, top
 
     def show_page(self):

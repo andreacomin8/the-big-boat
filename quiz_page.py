@@ -47,8 +47,6 @@ class QuizPage(GuiPage):
         else:
             self.mod = 'vela'
 
-        self.size_q = 18
-
         self.question_index_list_generated = question_index_list_generated
         self.q_no = 1
         self.quiz_answer = {}  # dict nel quale si salvano le risposte {index_domanda : risposta,...}
@@ -162,7 +160,7 @@ class QuizPage(GuiPage):
 
     def display_q(self):
         text = self.data['domande'][self.q_selected_index]
-        Label(canvas_question, text=text, font=('ariel', self.size_q, 'bold'), wraplength=870,
+        Label(canvas_question, text=text, font=('ariel', 18, 'bold'), wraplength=870,
               justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
 
     def display_options(self):
