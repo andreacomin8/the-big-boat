@@ -8,6 +8,7 @@ from quiz_generator import QuizGenerator
 from tkinter import messagebox as mb
 import json, random
 
+
 # windows size
 landing_page_width = 620
 landing_page_height = 500
@@ -21,15 +22,15 @@ quiz_height = 790
 
 def launch_landing_page():
     tk_object = Tk()
-    tk_object.resizable(False, False)
-    # retrieve_page_content()
+    tk_object.resizable(True, True)
     a = landing_page.LandingPage(tk_object, landing_page_width, landing_page_height, "Quiz Patente Nautica - Menu Iniziale", "#b8e6fe")
     a.show_page()
+    # a.set_scaling_dpi(tk_object)
 
 
 def launch_choose_modality_page_base():
     tk_object = Tk()
-    tk_object.resizable(False, False)
+    tk_object.resizable(True, True)
     # retrieve_page_content()
     a = choose_modality.ChooseModalityPageBase(tk_object, choose_modality_width, choose_modality_height, "Scegli la modalità", "#b8e6fe",
                                                header_path=headers_path["base"])
@@ -121,13 +122,14 @@ def launch_error_modality_page_vela():
 
 def launch_quiz_exam_base():
     tk_object = Tk()
-    tk_object.resizable(False, False)
+    tk_object.resizable(False,False)
     a = quiz_page.QuizPage(tk_object, base_questions, quiz_width, quiz_height, "Quiz!",
                            color_modality['exam'],
                            QuizGenerator(base_questions).exam_base(),
                            header_path=headers_path['exam'])
     a.back_button(lambda: pages_transition(tk_object, "choose_modality_base"))
     a.show_page()
+
 
 
 def launch_quiz_topic_base():
@@ -144,7 +146,7 @@ def launch_quiz_topic_base():
 
 def launch_quiz_search_base():
     tk_object = Tk()
-    tk_object.resizable(False, False)
+    tk_object.resizable(True, True)
     if QuizGenerator(base_questions, word_searched=word_searched).search():
         a = quiz_page.QuizPage(tk_object, base_questions, quiz_width, quiz_height,
                                "Quiz!", color_modality['search'],

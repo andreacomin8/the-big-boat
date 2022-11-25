@@ -6,7 +6,6 @@ from tkinter import messagebox as mb
 import PIL.Image
 from PIL import ImageOps, ImageTk
 import choose_modality
-import landing_page
 
 # todo Se importo pages_transition, non funziona la funzione WTF?
 
@@ -47,6 +46,7 @@ class QuizPage(GuiPage):
         else:
             self.mod = 'vela'
 
+        self.size_q = 18
         self.question_index_list_generated = question_index_list_generated
         self.q_no = 1
         self.quiz_answer = {}  # dict nel quale si salvano le risposte {index_domanda : risposta,...}
@@ -69,6 +69,8 @@ class QuizPage(GuiPage):
         l1.pack()
 
     def create_structure(self):
+        global main_frame
+        global second_frame
         global canvas_info
         global canvas_question
         global canvas_options
@@ -76,12 +78,44 @@ class QuizPage(GuiPage):
         global canvas_buttons
         global canvas_footer
 
-        canvas_info = Canvas(self.tk_object, bg=self.background, highlightthickness=0)
-        canvas_question = Canvas(self.tk_object, bg=self.background, highlightthickness=0)
-        canvas_options = Canvas(self.tk_object, bg=self.background, highlightthickness=0)
-        canvas_image = Canvas(self.tk_object, height=250,  bg=self.background, highlightthickness=0)
-        canvas_buttons = Canvas(self.tk_object, bg=self.background, highlightthickness=0)
-        canvas_footer = Canvas(self.tk_object, bg=self.background, highlightthickness=0)
+        # Create scrollbar - necessario creare un frame, dentro il quale posizionare i canvas
+
+        # Main Frame
+        main_frame = Frame(self.tk_object, bg=self.background)
+        main_frame.pack(fill=BOTH, expand=1)
+
+        # Create Canvas
+        my_canvas = Canvas(main_frame, bg=self.background)
+        my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+        # create scrollbar
+        my_scrollbar = Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+
+        # configure canvas
+
+        def on_mousewheel(event):
+            shift = (event.state & 0x1) != 0
+            scroll = -1 if event.delta > 0 else 1
+            my_canvas.yview_scroll(scroll, "units")
+
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
+        my_canvas.bind_all("<MouseWheel>", on_mousewheel)
+
+        # second Frame
+        second_frame = Frame(my_canvas, bg=self.background)
+
+        # add new frame to a Window in the canvas
+        my_canvas.create_window((0, 0), window=second_frame, anchor='nw')
+
+
+        canvas_info = Canvas(second_frame, bg=self.background, highlightthickness=0)
+        canvas_question = Canvas(second_frame, bg=self.background, highlightthickness=0)
+        canvas_options = Canvas(second_frame, bg=self.background, highlightthickness=0)
+        canvas_image = Canvas(second_frame, height=250,  bg=self.background, highlightthickness=0)
+        canvas_buttons = Canvas(second_frame, bg=self.background, highlightthickness=0)
+        canvas_footer = Canvas(second_frame, bg=self.background, highlightthickness=0)
 
         canvas_info.pack(fill='x')
         canvas_question.pack(fill='x')
@@ -90,6 +124,19 @@ class QuizPage(GuiPage):
         # usare place invece di pack, per non far continuamente muovere il punlsante ad ogni domanda
         canvas_buttons.place(relx=0.5, rely=0.87, anchor=CENTER)
         # canvas_footer.pack()
+
+        def size_font_plus():
+            global label_q
+            self.size_q += 5
+            label_q.configure(font=('ariel', self.size_q, 'bold'))
+
+        def size_font_reduce():
+            global label_q
+            self.size_q -= 5
+            label_q.configure(font=('ariel', self.size_q,'bold'))
+
+        Button(canvas_info, text='size +', command=size_font_plus).pack()
+        Button(canvas_info,text='size -', command=size_font_reduce).pack()
 
         def confirm_command():
             # saving the answer
@@ -141,6 +188,7 @@ class QuizPage(GuiPage):
             mb.showwarning("Attenzione", 'Non è possibile tornare indietro')
 
     def create_next_window(self):
+        main_frame.destroy()
         canvas_info.destroy()
         canvas_question.destroy()
         canvas_options.destroy()
@@ -159,9 +207,11 @@ class QuizPage(GuiPage):
         Label(canvas_info, text=text, fg='red', font=("ariel", 15), bg=self.background).pack()
 
     def display_q(self):
+        global label_q
         text = self.data['domande'][self.q_selected_index]
-        Label(canvas_question, text=text, font=('ariel', 18, 'bold'), wraplength=870,
-              justify=LEFT, bg=self.background).pack(padx=20, pady=10, anchor='w')
+        label_q = Label(canvas_question, text=text, font=('ariel', self.size_q, 'bold'), wraplength=870,
+              justify=LEFT, bg=self.background)
+        label_q.pack(padx=20, pady=10, anchor='w')
 
     def display_options(self):
         val = 1
