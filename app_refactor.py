@@ -1,6 +1,6 @@
 # Dicitura per Pyinstaller:
 import os, sys
-os.chdir(sys._MEIPASS)
+#os.chdir(sys._MEIPASS)
 
 import page_launcher
 from tkinter import messagebox as mb
